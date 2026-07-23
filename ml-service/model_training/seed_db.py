@@ -53,8 +53,28 @@ def main():
     cur = conn.cursor()
 
     try:
+        # Clear existing data for a clean re-seeding
+        print("Clearing existing clinical and logging tables...")
+        cur.execute("""
+            TRUNCATE TABLE 
+                public.patients, 
+                public.vitals, 
+                public.lab_results, 
+                public.medications, 
+                public.diagnoses, 
+                public.doctor_patient_assignments, 
+                public.audit_logs, 
+                public.alerts, 
+                public.ai_chat_sessions, 
+                public.ai_messages, 
+                public.predictions, 
+                public.explanations
+            CASCADE;
+        """)
+
         # 1. Create mock hospitals
         hospital_id_1 = str(uuid.uuid4())
+
         hospital_id_2 = str(uuid.uuid4())
         
         print("Inserting hospitals...")
@@ -138,16 +158,17 @@ def main():
         base_dir = r"c:\Users\toshiba\Desktop\Ezitech Internship Task\ml-service\data"
         
         # We will seed:
-        # - 30 Diabetes Patients
-        # - 30 Heart Disease Patients
-        # - 30 Kidney Disease Patients
-        # - 30 Stroke Patients
+        # - 100 Diabetes Patients
+        # - 100 Heart Disease Patients
+        # - 100 Kidney Disease Patients
+        # - 100 Stroke Patients
         
         print("Reading datasets...")
-        df_diabetes = pd.read_csv(os.path.join(base_dir, "diabetes-health-indicators-dataset", "diabetes_binary_5050split_health_indicators_BRFSS2015.csv")).sample(30)
-        df_heart = pd.read_csv(os.path.join(base_dir, "heart-disease-health-indicators-dataset", "heart_disease_health_indicators_BRFSS2015.csv")).sample(30)
-        df_kidney = pd.read_csv(os.path.join(base_dir, "kidney-disease-dataset", "Chronic_Kidney_Dsease_data.csv")).sample(30)
-        df_stroke = pd.read_csv(os.path.join(base_dir, "synthetic_stroke_dataset", "synthetic_stroke_data.csv")).sample(30)
+        df_diabetes = pd.read_csv(os.path.join(base_dir, "diabetes-health-indicators-dataset", "diabetes_binary_5050split_health_indicators_BRFSS2015.csv")).sample(100)
+        df_heart = pd.read_csv(os.path.join(base_dir, "heart-disease-health-indicators-dataset", "heart_disease_health_indicators_BRFSS2015.csv")).sample(100)
+        df_kidney = pd.read_csv(os.path.join(base_dir, "kidney-disease-dataset", "Chronic_Kidney_Dsease_data.csv")).sample(100)
+        df_stroke = pd.read_csv(os.path.join(base_dir, "synthetic_stroke_dataset", "synthetic_stroke_data.csv")).sample(100)
+
 
         # Helper list for patient batch inserts
         patients_to_insert = []
