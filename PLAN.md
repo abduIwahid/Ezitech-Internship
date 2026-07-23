@@ -36,39 +36,37 @@ medisight-ai/
 ```
 
 ## 3. Build Order (Sequence of Execution)
-Following the 10-step agent sequence from the prompt guidelines, we will execute in this exact order:
-1. **Project Scaffolding & Setup**: Initialize git, monorepo folders, base dependencies, and environment files.
-2. **Database Schema, RLS & Auth**: Write SQL migrations for all tables, set up RLS policies, and configure Supabase Auth.
-3. **Synthetic Data & Feature Engineering**: Generate a realistic synthetic dataset and build the Python feature engineering pipeline.
-4. **ML Training & Inference API**: Train models (Logistic Regression, XGBoost, LightGBM), track in MLflow, and build FastAPI endpoints with SHAP.
-5. **Supabase Edge Functions**: Implement orchestration layer (`predict-risk`, `ai-assistant-chat`, `send-alert`, etc.) and DB webhooks.
-6. **Core Frontend**: Build Auth flows, Dashboard, Patient List, and Patient Detail screens wired to Supabase.
-7. **Predictions UI & AI Assistant**: Implement SHAP waterfall charts, Realtime Alerts Center, and the conversational AI interface.
-8. **Admin Panel & MLOps UI**: Build user management, model registry view, drift monitoring, and retraining triggers.
-9. **Testing, Hardening & CI/CD**: Write automated tests, accessibility pass, GitHub Actions pipeline, and deployment prep.
+Following the 10-step agent sequence from the prompt guidelines, we execute in this exact order:
+1. **[x] Project Scaffolding & Setup**: Initialize git, monorepo folders, base dependencies, and environment files.
+2. **[x] Database Schema, RLS & Auth**: Write SQL migrations for all tables, set up RLS policies, and configure Supabase Auth.
+3. **[x] Synthetic Data & Feature Engineering**: Generate a realistic synthetic dataset and build the Python feature engineering pipeline.
+4. **[x] ML Training & Inference API**: Train models (Logistic Regression, XGBoost, LightGBM), track in MLflow, and build FastAPI endpoints with SHAP.
+5. **[ ] Supabase Edge Functions**: Implement orchestration layer (`predict-risk`, `ai-assistant-chat`, `send-alert`, etc.) and DB webhooks.
+6. **[ ] Core Frontend**: Build Auth flows, Dashboard, Patient List, and Patient Detail screens wired to Supabase.
+7. **[ ] Predictions UI & AI Assistant**: Implement SHAP waterfall charts, Realtime Alerts Center, and the conversational AI interface.
+8. **[ ] Admin Panel & MLOps UI**: Build user management, model registry view, drift monitoring, and retraining triggers.
+9. **[ ] Testing, Hardening & CI/CD**: Write automated tests, accessibility pass, GitHub Actions pipeline, and deployment prep.
 
-## 4. Missing Decisions & Ambiguities
-Before we begin scaffolding (Prompt 2), I need you to confirm the following decisions:
-1. **ML Service Hosting:** FastAPI cannot run natively on Vercel. Where do you prefer to host the ML service? (e.g., Render, Railway, Fly.io, or AWS).
-2. **Seed Disease Choice:** Should we start with **Diabetes** (Pima dataset) or **Heart Disease** (UCI dataset) for the initial MVP?
-3. **LLM Provider:** Which provider API key will you supply for the AI Assistant? (Anthropic Claude or OpenAI).
+## 4. Confirmed Decisions
+1. **ML Service Hosting**: Configured for deployment on Render/Railway using Uvicorn. Local dev runs on port 8000.
+2. **Seed Disease Choice**: Selected **Diabetes** using the CDC BRFSS dataset (50-50 split, 70,692 rows) for training our prediction and explainability engine.
+3. **LLM Provider**: Programmed to use OpenAI/Anthropic APIs inside the Supabase Edge Function layers.
 
-## 5. Phased Milestone Breakdown (4-Week Roadmap)
-Mapped directly to PRD Section 21:
+## 5. Phased Milestone Breakdown (6-8 Week Timeline)
+Mapped to the user's 6-8 week timeline:
 
-- **Milestone 1 (Week 1 - Foundations):**
-  - Monorepo setup, Next.js UI scaffolding.
-  - Supabase Auth, DB Schema, and RLS policies.
-  - Synthetic data generation and baseline ML model.
-- **Milestone 2 (Week 2 - Core ML + Dashboard):**
-  - Advanced models (XGBoost/LightGBM) + MLflow.
-  - FastAPI inference service with SHAP integration.
-  - Core UI: Dashboard, Patient List, and Predictions view wired to APIs.
-- **Milestone 3 (Week 3 - Differentiators):**
-  - AI Assistant (RAG) via Edge Functions.
-  - Supabase Realtime Alerts Center.
-  - Admin Panel and population-level analytics.
-- **Milestone 4 (Week 4 - Polish & Handover):**
-  - MLOps (retraining triggers, drift detection).
-  - Automated testing & CI/CD pipeline setup.
-  - Final documentation (Deployment Guide, Presentation prep).
+- **Weeks 1-2 (Ingestion, Seeding & ML Pipeline - Completed):**
+  - Next.js UI scaffolding, database schemas, and RLS validation.
+  - Ingested 7 de-identified clinical datasets.
+  - Built feature engineering calculations and database seeding engine.
+  - Trained models (Logistic Regression baseline, Random Forest, XGBoost, LightGBM) with MLflow tracking.
+  - Promoted LightGBM (AUC-ROC: 0.8307) and built the FastAPI prediction / SHAP engine.
+  - Validated all modules via passing pytest suites.
+- **Weeks 3-4 (Edge Functions & Core UI - Pending):**
+  - Deno Edge Functions for proxying, alert routing, and reports.
+  - Frontend patient registry views, doctor workflows, and dashboard pages.
+- **Weeks 5-6 (Interactive Features & Auditing - Pending):**
+  - RAG-grounded AI Chat Assistant, Realtime alerts panel, and SHAP interactive charts.
+  - Admin governance, model registry views, and drift analytics.
+- **Weeks 7-8 (Testing, Hardening & Launch - Pending):**
+  - End-to-end integration testing, WCAG 2.1 AA audits, CI/CD setup, and cloud deployment.
