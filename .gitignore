@@ -63,5 +63,8 @@ supabase/.temp/
 ml-service/data/*
 !ml-service/data/.gitkeep
 ml-service/models/
+mlruns/
+mlflow.db
+
 
 
