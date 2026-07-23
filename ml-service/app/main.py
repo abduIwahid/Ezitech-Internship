@@ -62,6 +62,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+@app.get("/")
+def read_root():
+    return {
+        "message": "Welcome to the MediSight AI Clinical Prediction Engine API.",
+        "documentation": "/docs",
+        "status": "active"
+    }
 
 # Input Pydantic model
 class PatientFeatures(BaseModel):

@@ -65,6 +65,4 @@ ml-service/data/*
 ml-service/models/
 mlruns/
 mlflow.db
-
-
-
+.kiro/
