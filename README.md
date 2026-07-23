@@ -37,4 +37,16 @@ uvicorn app.main:app --reload
 supabase start
 ```
 
-*Note: As this is an internship case study, the dataset used for the ML models is a synthetic/de-identified derivative of public healthcare datasets (e.g., Pima Diabetes/UCI Heart Disease), extended with synthetic time-series vitals to simulate hospital data.*
+## Clinical Datasets Disclosures
+
+As this is an enterprise clinical predictive platform, we ingest, process, and train models using de-identified clinical datasets containing real health indicators:
+1. **Diabetes Health Indicators**: CDC BRFSS 2015 dataset containing 253,680 survey responses.
+2. **Heart Disease Health Indicators**: CDC BRFSS 2015 dataset for cardiovascular disease.
+3. **Chronic Kidney Disease (CKD) Dataset**: Containing continuous clinical metrics (GFR, Creatinine, Electrolytes, HbA1c).
+4. **Stroke Prediction Dataset**: Structured clinical risk factors (hypertension, heart disease, average glucose level, BMI).
+5. **Liver Patient Dataset (LPD)**: Continuous enzyme and protein metrics (bilirubin, SGPT, SGOT, albumin).
+6. **Breast Cancer Wisconsin Dataset**: Nuclear feature measurements from fine needle aspirates.
+7. **Hypertension Health Indicators**: BRFSS 2015 indicators for blood pressure risk factors.
+
+*Note: All data has been de-identified and is formatted in FHIR-like observations (vitals, lab results, medications, and diagnoses) inside the Supabase Postgres database for demonstration and training.*
+

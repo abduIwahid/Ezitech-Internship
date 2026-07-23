@@ -58,3 +58,10 @@ build/
 
 # Supabase
 supabase/.temp/
+
+# Large Datasets and ML Models
+ml-service/data/*
+!ml-service/data/.gitkeep
+ml-service/models/
+
+
