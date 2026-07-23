@@ -4,6 +4,8 @@ import { RiskBadge } from "@/components/shared/RiskBadge"
 import { DataTable } from "@/components/shared/DataTable"
 import Link from "next/link"
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const cookieStore = cookies()
   const supabase = createServerClient(

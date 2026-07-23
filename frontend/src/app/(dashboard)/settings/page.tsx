@@ -3,6 +3,8 @@ import { cookies } from "next/headers"
 import { ProfileForm } from "@/components/shared/ProfileForm"
 import { redirect } from "next/navigation"
 
+export const dynamic = 'force-dynamic'
+
 export default async function SettingsPage() {
   const cookieStore = cookies()
   const supabase = createServerClient(

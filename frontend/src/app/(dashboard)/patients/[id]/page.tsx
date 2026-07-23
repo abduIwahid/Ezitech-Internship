@@ -4,6 +4,8 @@ import { PatientRiskCard } from "@/components/shared/PatientRiskCard"
 import { DataTable } from "@/components/shared/DataTable"
 import { notFound } from "next/navigation"
 
+export const dynamic = 'force-dynamic'
+
 export default async function PatientDetailPage({ params }: { params: { id: string } }) {
   const cookieStore = cookies()
   const supabase = createServerClient(
