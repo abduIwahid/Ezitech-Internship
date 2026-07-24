@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { RiskBadge, RiskSeverity } from "./RiskBadge"
 import { Button } from "@/components/ui/button"

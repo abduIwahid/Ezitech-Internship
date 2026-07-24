@@ -7,6 +7,8 @@ import { notFound } from "next/navigation"
 export const dynamic = 'force-dynamic'
 
 export default async function PatientDetailPage({ params }: { params: { id: string } }) {
+  if (!params || !params.id) return notFound()
+
   const cookieStore = cookies()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
