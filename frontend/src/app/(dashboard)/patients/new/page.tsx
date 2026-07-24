@@ -71,11 +71,12 @@ export default function NewPatientPage() {
 
       // 2. Insert Vitals
       const vitalsToInsert = []
+      const now = new Date().toISOString()
       if (formData.bmi) {
-        vitalsToInsert.push({ patient_id: patient.id, type: 'BMI', value: formData.bmi, unit: 'kg/m2' })
+        vitalsToInsert.push({ patient_id: patient.id, type: 'BMI', value: formData.bmi, unit: 'kg/m2', recorded_at: now })
       }
       if (formData.bpSystolic) {
-        vitalsToInsert.push({ patient_id: patient.id, type: 'Blood Pressure Systolic', value: formData.bpSystolic, unit: 'mmHg' })
+        vitalsToInsert.push({ patient_id: patient.id, type: 'Blood Pressure Systolic', value: formData.bpSystolic, unit: 'mmHg', recorded_at: now })
       }
       if (vitalsToInsert.length > 0) {
         const { error: vitalsError } = await supabase.from('vitals').insert(vitalsToInsert)
