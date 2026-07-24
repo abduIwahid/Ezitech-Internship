@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import {
   Table,
   TableBody,
@@ -42,7 +43,10 @@ export function DataTable<TData>({ columns, data, onRowClick }: DataTableProps<T
             data.map((row, i) => (
               <TableRow 
                 key={i} 
-                className={onRowClick ? "cursor-pointer hover:bg-muted/50" : ""}
+                className={cn(
+                  "transition-all duration-200",
+                  onRowClick ? "cursor-pointer hover:bg-muted hover:shadow-[inset_0px_0px_0px_1px_rgba(0,0,0,0.05)] dark:hover:shadow-[inset_0px_0px_0px_1px_rgba(255,255,255,0.05)]" : "hover:bg-muted/50"
+                )}
                 onClick={() => onRowClick && onRowClick(row)}
               >
                 {columns.map((col, j) => (

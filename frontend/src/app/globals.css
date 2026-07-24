@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -8,82 +9,137 @@
 }
 
 @layer base {
-  .theme {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-  }
   :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --background: hsl(210, 40%, 98%);
+    --foreground: hsl(222, 84%, 5%);
+    --card: hsl(0, 0%, 100%);
+    --card-foreground: hsl(222, 84%, 5%);
+    --popover: hsl(0, 0%, 100%);
+    --popover-foreground: hsl(222, 84%, 5%);
+    
+    /* Clinical Teal/Blue */
+    --primary: hsl(199, 89%, 48%);
+    --primary-foreground: hsl(0, 0%, 100%);
+    
+    --secondary: hsl(210, 40%, 96%);
+    --secondary-foreground: hsl(222, 47%, 11%);
+    --muted: hsl(210, 40%, 96%);
+    --muted-foreground: hsl(215, 16%, 47%);
+    --accent: hsl(210, 40%, 96%);
+    --accent-foreground: hsl(222, 47%, 11%);
+    --destructive: hsl(0, 84%, 60%);
+    --destructive-foreground: hsl(210, 40%, 98%);
+    --border: hsl(214, 32%, 91%);
+    --input: hsl(214, 32%, 91%);
+    --ring: hsl(199, 89%, 48%);
+    --radius: 0.75rem;
   }
   .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --background: hsl(222, 84%, 5%);
+    --foreground: hsl(210, 40%, 98%);
+    --card: hsl(222, 84%, 5%);
+    --card-foreground: hsl(210, 40%, 98%);
+    --popover: hsl(222, 84%, 5%);
+    --popover-foreground: hsl(210, 40%, 98%);
+    
+    /* Dark Mode Clinical Teal */
+    --primary: hsl(199, 89%, 48%);
+    --primary-foreground: hsl(222, 47%, 11%);
+    
+    --secondary: hsl(217, 33%, 18%);
+    --secondary-foreground: hsl(210, 40%, 98%);
+    --muted: hsl(217, 33%, 18%);
+    --muted-foreground: hsl(215, 20%, 65%);
+    --accent: hsl(217, 33%, 18%);
+    --accent-foreground: hsl(210, 40%, 98%);
+    --destructive: hsl(0, 63%, 31%);
+    --destructive-foreground: hsl(210, 40%, 98%);
+    --border: hsl(217, 33%, 18%);
+    --input: hsl(217, 33%, 18%);
+    --ring: hsl(213, 27%, 84%);
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    /* Medical AI background pattern */
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
-  html {
-    @apply font-sans;
+}
+
+@layer components {
+  /* Uiverse.io Inspired Button */
+  .uiverse-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, hsl(199, 89%, 48%), hsl(220, 89%, 55%));
+    box-shadow: 0 4px 15px rgba(0, 150, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    z-index: 1;
+    border: none;
+  }
+  .uiverse-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, hsl(220, 89%, 55%), hsl(199, 89%, 48%));
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .uiverse-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 150, 255, 0.5);
+  }
+  .uiverse-btn:hover::before {
+    opacity: 1;
+  }
+  .uiverse-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 150, 255, 0.3);
+  }
+
+  /* Uiverse.io Cyber-Clinical Card Glow */
+  .uiverse-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  .uiverse-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px -10px rgba(0, 150, 255, 0.3);
+  }
+
+  /* Uiverse.io Modern Loader */
+  .loader-pulse {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(0deg, hsl(199, 89%, 48%) 33%, hsl(220, 89%, 55%) 100%);
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .loader-pulse::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--background);
+  }
+  @keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg)}
   }
 }
