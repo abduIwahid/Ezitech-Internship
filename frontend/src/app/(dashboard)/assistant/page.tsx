@@ -5,6 +5,15 @@ import { AIChatPanel } from "@/components/shared/AIChatPanel"
 import { createClient } from "@/lib/supabase/client"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
+function getPatientDisplayName(p: any): string {
+  const d = p.demographics || {}
+  if (d.full_name) return `${d.full_name} (MRN: ${p.mrn})`
+  const first = d.first_name || d.firstName || ""
+  const last = d.last_name || d.lastName || ""
+  const name = `${first} ${last}`.trim()
+  return name ? `${name} (MRN: ${p.mrn})` : `MRN: ${p.mrn}`
+}
+
 export default function AssistantPage() {
   const [patients, setPatients] = useState<any[]>([])
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null)
@@ -15,6 +24,7 @@ export default function AssistantPage() {
       const { data, error } = await supabase
         .from('patients')
         .select('id, demographics, mrn')
+        .order('created_at', { ascending: false })
         .limit(50)
 
       if (!error && data) {
@@ -31,19 +41,19 @@ export default function AssistantPage() {
           <h1 className="text-2xl font-bold tracking-tight">AI Clinical Assistant</h1>
           <p className="text-muted-foreground">Conversational decision support grounded in patient data.</p>
         </div>
-        <div className="w-full sm:w-[300px]">
-          <Select 
-            value={selectedPatientId || "general"} 
+        <div className="w-full sm:w-[320px]">
+          <Select
+            value={selectedPatientId || "general"}
             onValueChange={(val) => setSelectedPatientId(val === "general" ? null : val)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select patient context" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="general">General / No Patient Selected</SelectItem>
+              <SelectItem value="general">🌐 General / No Patient Selected</SelectItem>
               {patients.map((p) => (
                 <SelectItem key={p.id} value={p.id}>
-                  {p.demographics?.first_name} {p.demographics?.last_name} (MRN: {p.mrn})
+                  {getPatientDisplayName(p)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -51,9 +61,7 @@ export default function AssistantPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-        <AIChatPanel patientId={selectedPatientId} key={selectedPatientId || 'general'} />
-      </div>
+      <AIChatPanel patientId={selectedPatientId} key={selectedPatientId || 'general'} />
     </div>
   )
 }

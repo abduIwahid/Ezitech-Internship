@@ -2,6 +2,7 @@
 
 import { PatientRiskCard } from "@/components/shared/PatientRiskCard"
 import { DataTable } from "@/components/shared/DataTable"
+import { RunPredictionButton } from "@/components/shared/RunPredictionButton"
 import Link from "next/link"
 import { ArrowLeft, User, Calendar, Activity, FlaskConical, Stethoscope, Heart } from "lucide-react"
 import { RiskBadge } from "@/components/shared/RiskBadge"
@@ -135,15 +136,21 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
               predictionId={latestPrediction.id}
             />
           ) : (
-            <div className="bg-card border rounded-xl p-6 shadow-sm text-center space-y-3">
-              <Stethoscope className="h-8 w-8 mx-auto text-muted-foreground/40" />
-              <p className="text-muted-foreground text-sm">No prediction available.</p>
-              <Link
-                href="/patients/new"
-                className="inline-block text-xs text-primary hover:underline"
-              >
-                Add new assessment →
-              </Link>
+            <div className="bg-card border rounded-xl p-6 shadow-sm space-y-4">
+              <div className="text-center space-y-2">
+                <Stethoscope className="h-8 w-8 mx-auto text-muted-foreground/40" />
+                <p className="text-muted-foreground text-sm font-medium">No prediction available</p>
+                <p className="text-xs text-muted-foreground">Run the AI model to generate a risk assessment for this patient.</p>
+              </div>
+              <RunPredictionButton patient={patient} />
+            </div>
+          )}
+
+          {/* Re-run prediction below existing card */}
+          {latestPrediction && (
+            <div className="bg-card border rounded-xl p-4 shadow-sm space-y-3">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Update Assessment</h3>
+              <RunPredictionButton patient={patient} />
             </div>
           )}
 

@@ -142,10 +142,19 @@ export default function NewPatientPage() {
 
       if (predSaveErr) {
         console.warn("Prediction save warning:", predSaveErr.message)
-        // Still navigate — patient was created successfully
       }
 
-      // 6. Navigate to patient detail page
+      // 6. Auto-generate alert for High or Critical risk patients
+      if (prediction.severity === "High" || prediction.severity === "Critical") {
+        await supabase.from("alerts").insert({
+          patient_id: patient.id,
+          type: `${prediction.severity} Diabetes Risk`,
+          severity: prediction.severity,
+          status: "New",
+        })
+      }
+
+      // 7. Navigate to patient detail page
       router.push(`/patients/${patient.id}`)
     } catch (err: any) {
       console.error(err)
