@@ -39,12 +39,6 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
     })
   }, [])
 
-  const roleItems = role === 'doctor'
-    ? [{ name: 'Doctor Hub', href: '/assistant', icon: Bot }, { name: 'Clinical Patients', href: '/patients', icon: Users }]
-    : role === 'patient'
-      ? [{ name: 'My Health', href: '/patients', icon: User }, { name: 'My Alerts', href: '/alerts', icon: Bell }]
-      : []
-
   const navItems = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Patients", href: "/patients", icon: Users },
@@ -52,7 +46,6 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
     { name: "Alerts Center", href: "/alerts", icon: Bell },
     { name: "AI Assistant", href: "/assistant", icon: Bot },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
-    ...roleItems,
     ...(isAdmin ? [{ name: "Admin Console", href: "/admin", icon: ShieldCheck }] : []),
     { name: "Settings", href: "/settings", icon: Settings },
   ]
