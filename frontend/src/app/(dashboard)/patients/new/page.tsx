@@ -130,7 +130,7 @@ export default function NewPatientPage() {
 
       const prediction = await mlRes.json()
 
-      // 5. Save prediction to Supabase
+      // 5. Save prediction to Supabase (only use confirmed schema columns)
       const { error: predSaveErr } = await supabase.from("predictions").insert({
         patient_id: patient.id,
         disease: "Diabetes",
@@ -138,17 +138,18 @@ export default function NewPatientPage() {
         severity: prediction.severity,
         confidence: prediction.confidence,
         model_version: prediction.model_version,
-        features_used: mlPayload,
-        created_by: user.id,
       })
 
-      if (predSaveErr) console.warn("Prediction save warning:", predSaveErr.message)
+      if (predSaveErr) {
+        console.warn("Prediction save warning:", predSaveErr.message)
+        // Still navigate — patient was created successfully
+      }
 
       // 6. Navigate to patient detail page
       router.push(`/patients/${patient.id}`)
     } catch (err: any) {
       console.error(err)
-      setError(err.message)
+      setError(err.message || "An unexpected error occurred. Is the ML service running at localhost:8000?")
       setLoading(false)
     }
   }

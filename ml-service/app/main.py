@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import shap
 from fastapi import FastAPI, HTTPException, BackgroundTasks, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 # Load paths
@@ -42,7 +43,6 @@ def load_production_model():
             feature_names = metadata["features"]
             
             # Initialize SHAP explainer
-            # For LightGBM and XGBoost, TreeExplainer is extremely fast and robust
             explainer = shap.TreeExplainer(model)
             print(f"Loaded production model: {metadata['model_name']} (AUC: {metadata['metrics']['auc_roc']:.4f})")
         except Exception as e:
@@ -61,6 +61,20 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+# ── CORS ── allow Next.js dev server and Vercel deployments
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://*.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 def read_root():
