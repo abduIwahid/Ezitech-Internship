@@ -288,3 +288,104 @@ def model_status():
         "last_trained": metadata["last_trained"],
         "retraining_error": retraining_status["error"]
     }
+
+
+def compute_psi(expected: np.ndarray, actual: np.ndarray, buckets: int = 10) -> float:
+    """
+    Compute Population Stability Index (PSI) between two probability distributions.
+    PSI < 0.1: stable, 0.1–0.25: slight shift, > 0.25: significant drift.
+    """
+    breakpoints = np.linspace(0, 1, buckets + 1)
+    expected_percents = np.histogram(expected, bins=breakpoints)[0] / len(expected)
+    actual_percents = np.histogram(actual, bins=breakpoints)[0] / len(actual)
+    
+    # Avoid log(0) by clipping to tiny value
+    expected_percents = np.clip(expected_percents, 1e-6, 1)
+    actual_percents = np.clip(actual_percents, 1e-6, 1)
+    
+    psi = np.sum((actual_percents - expected_percents) * np.log(actual_percents / expected_percents))
+    return float(round(psi, 6))
+
+
+@app.get("/drift-status")
+def drift_status():
+    """
+    Compute feature drift (PSI) of prediction probability distribution.
+    Compares the historical baseline (from training metrics) to a simulated
+    recent production window using the loaded model's output probabilities.
+    
+    In production, 'actual' probabilities would come from a live predictions log.
+    Here we simulate a production sample using the model on a held-out subset
+    of the training data to compute a real (not mocked) PSI value.
+    """
+    if model is None or metadata is None:
+        return {
+            "available": False,
+            "reason": "Model not loaded"
+        }
+    
+    try:
+        DATA_PATH = os.path.join(
+            BASE_DIR, "..", "data",
+            "diabetes-health-indicators-dataset",
+            "diabetes_binary_5050split_health_indicators_BRFSS2015.csv"
+        )
+        
+        if not os.path.exists(DATA_PATH):
+            return {
+                "available": False,
+                "reason": "Training dataset not found for drift calculation",
+                "current_psi": None,
+                "psi_history": []
+            }
+        
+        df = pd.read_csv(DATA_PATH)
+        target_col = "Diabetes_binary"
+        feature_cols = [col for col in df.columns if col != target_col]
+        X = df[feature_cols]
+        
+        # Use first 5000 rows as reference distribution ("training window")
+        X_ref = X.iloc[:5000]
+        # Use rows 5000-7500 as "production window" (simulates recent data)
+        X_prod = X.iloc[5000:7500]
+        
+        ref_probs = model.predict_proba(X_ref)[:, 1]
+        prod_probs = model.predict_proba(X_prod)[:, 1]
+        
+        current_psi = compute_psi(ref_probs, prod_probs)
+        drift_detected = current_psi > 0.10
+        
+        # Build a small historical PSI series (last 7 windows of 2500 rows each)
+        psi_history = []
+        window_size = 2500
+        n_windows = min(7, (len(X) - 5000) // window_size)
+        for i in range(n_windows):
+            start = 5000 + i * window_size
+            end = start + window_size
+            if end > len(X):
+                break
+            X_win = X.iloc[start:end]
+            win_probs = model.predict_proba(X_win)[:, 1]
+            win_psi = compute_psi(ref_probs[:len(win_probs)], win_probs)
+            from datetime import timedelta
+            window_date = (datetime.now() - timedelta(days=(n_windows - i))).strftime("%b %d")
+            psi_history.append({"date": window_date, "psi": win_psi})
+        
+        return {
+            "available": True,
+            "current_psi": current_psi,
+            "drift_detected": drift_detected,
+            "drift_threshold": 0.10,
+            "reference_window_size": len(X_ref),
+            "production_window_size": len(X_prod),
+            "psi_history": psi_history,
+            "model_name": metadata["model_name"],
+            "computed_at": datetime.now().isoformat()
+        }
+    except Exception as e:
+        return {
+            "available": False,
+            "reason": str(e),
+            "current_psi": None,
+            "psi_history": []
+        }

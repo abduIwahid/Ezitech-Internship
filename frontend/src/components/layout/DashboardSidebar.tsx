@@ -2,8 +2,9 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot } from "lucide-react"
+import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3 } from "lucide-react"
 import { createBrowserClient } from "@supabase/ssr"
+import { useState, useEffect } from "react"
 
 export function DashboardSidebar() {
   const pathname = usePathname()
@@ -17,11 +18,25 @@ export function DashboardSidebar() {
     window.location.href = '/login'
   }
 
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        supabase.from('profiles').select('role').eq('id', user.id).single().then(({ data }) => {
+          if (data) setIsAdmin(['super_admin', 'hospital_admin', 'data_scientist'].includes(data.role))
+        })
+      }
+    })
+  }, [])
+
   const navItems = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Patients", href: "/patients", icon: Users },
     { name: "Alerts Center", href: "/alerts", icon: Bell },
     { name: "AI Assistant", href: "/assistant", icon: Bot },
+    { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    ...(isAdmin ? [{ name: "Admin", href: "/admin", icon: ShieldCheck }] : []),
     { name: "Settings", href: "/settings", icon: Settings },
   ]
 
@@ -43,7 +58,7 @@ export function DashboardSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                pathname === item.href 
+                pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
                   ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
                   : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
               )}
