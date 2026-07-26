@@ -16,10 +16,14 @@ function formatName(str: string): string {
   return str.split(/[_\s]+/).map(w => abbreviations[w.toLowerCase()] || w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
 }
 
-// Get patient display name from demographics JSONB
+// Get patient display name from demographics JSONB — handles multiple field name conventions
 function getPatientName(p: any): string {
   const d = p.demographics
   if (!d) return "—"
+  // Handle full_name or name field
+  if (d.full_name) return d.full_name
+  if (d.name) return d.name
+  // Handle split first/last (camelCase or snake_case)
   const first = d.first_name || d.firstName || ""
   const last = d.last_name || d.lastName || ""
   const full = `${first} ${last}`.trim()
@@ -29,7 +33,14 @@ function getPatientName(p: any): string {
 function getAge(p: any): string {
   const d = p.demographics
   if (!d) return "—"
-  return d.age ? String(d.age) : "—"
+  if (d.age) return String(d.age)
+  // Derive from birth_date if age missing
+  if (d.birth_date || d.dob) {
+    const dob = new Date(d.birth_date || d.dob)
+    const age = Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    return String(age)
+  }
+  return "—"
 }
 
 function getGender(p: any): string {
@@ -106,8 +117,22 @@ export function PatientListView({ patients }: PatientListViewProps) {
       header: "Risk Status",
       cell: (p: any) => {
         const severity = getLatestSeverity(p)
-        return severity ? <RiskBadge severity={severity} /> : (
-          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">No prediction</span>
+        const preds = p.predictions || []
+        const latest = preds.length > 0 ? [...preds].sort((a: any, b: any) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )[0] : null
+        if (severity) {
+          return (
+            <div className="flex flex-col gap-0.5">
+              <RiskBadge severity={severity} />
+              {latest?.disease && <span className="text-[10px] text-muted-foreground">{latest.disease}</span>}
+            </div>
+          )
+        }
+        return (
+          <Link href={`/patients/new`} className="text-xs text-primary hover:underline">
+            Run Prediction
+          </Link>
         )
       }
     },

@@ -13,21 +13,33 @@ export default async function AnalyticsPage() {
   )
 
   // Population-level predictions stats
-  const { data: predictions } = await supabase
+  const { data: predictions, error: predErr } = await supabase
     .from('predictions')
-    .select('disease, severity, probability, created_at, patients(hospital_id, hospitals(name))')
+    .select('disease, severity, probability, created_at')
     .order('created_at', { ascending: false })
     .limit(2000)
 
-  // Patient count per hospital
-  const { data: patientsByHospital } = await supabase
+  if (predErr) console.error("Analytics predictions error:", predErr)
+
+  // Patient count per hospital — join hospitals table
+  const { data: patientsByHospital, error: hospErr } = await supabase
     .from('patients')
-    .select('hospital_id, hospitals(name)')
+    .select('hospital_id, hospitals!patients_hospital_id_fkey(name)')
+
+  if (hospErr) console.error("Analytics hospital error:", hospErr)
+
+  // Flatten hospitals relation (may be object or array depending on Supabase version)
+  const flatPatients = (patientsByHospital || []).map((p: any) => ({
+    hospital_id: p.hospital_id,
+    hospitals: Array.isArray(p.hospitals) ? p.hospitals[0] : p.hospitals
+  }))
 
   // Alert stats
-  const { data: alertStats } = await supabase
+  const { data: alertStats, error: alertErr } = await supabase
     .from('alerts')
     .select('severity, status, created_at')
+
+  if (alertErr) console.error("Analytics alerts error:", alertErr)
 
   // Risk score distribution (30-day window)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -40,9 +52,10 @@ export default async function AnalyticsPage() {
   return (
     <AnalyticsDashboard
       predictions={predictions || []}
-      patientsByHospital={patientsByHospital || []}
+      patientsByHospital={flatPatients}
       alertStats={alertStats || []}
       recentPredictions={recentPredictions || []}
     />
   )
 }
+

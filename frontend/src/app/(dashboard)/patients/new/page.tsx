@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+
 export default function NewPatientPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -22,10 +24,14 @@ export default function NewPatientPage() {
     lastName: "",
     age: "",
     gender: "",
-    bmi: "",
-    bpSystolic: "",
+    bmi: "25",
+    bpSystolic: "120",
+    highChol: false,
+    smoker: false,
     historyHeartDisease: false,
     historyStroke: false,
+    physActivity: true,
+    genHlth: "3",
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,32 +43,28 @@ export default function NewPatientPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error("Authentication required")
 
-      // Fetch the doctor's profile to get the hospital_id
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('hospital_id')
-        .eq('id', user.id)
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("hospital_id")
+        .eq("id", user.id)
         .single()
-        
-      if (profileError || !profile?.hospital_id) {
-        throw new Error("Could not find your Hospital Assignment. Please contact administration.")
-      }
 
       // 1. Insert Patient
       const mrn = `MRN-${Math.floor(Math.random() * 900000) + 100000}`
       const { data: patient, error: patientError } = await supabase
-        .from('patients')
+        .from("patients")
         .insert({
-          mrn: mrn,
+          mrn,
           demographics: {
             first_name: formData.firstName,
             last_name: formData.lastName,
             age: parseInt(formData.age),
             gender: formData.gender,
-            // Calculate a fake birth_date based on age for the Edge Function logic
-            birth_date: new Date(new Date().setFullYear(new Date().getFullYear() - parseInt(formData.age))).toISOString()
+            birth_date: new Date(
+              new Date().setFullYear(new Date().getFullYear() - parseInt(formData.age))
+            ).toISOString(),
           },
-          hospital_id: profile.hospital_id
+          hospital_id: profile?.hospital_id || null,
         })
         .select()
         .single()
@@ -70,53 +72,80 @@ export default function NewPatientPage() {
       if (patientError || !patient) throw new Error(`Patient Error: ${patientError?.message}`)
 
       // 2. Insert Vitals
-      const vitalsToInsert = []
       const now = new Date().toISOString()
-      if (formData.bmi) {
-        vitalsToInsert.push({ patient_id: patient.id, type: 'BMI', value: formData.bmi, unit: 'kg/m2', recorded_at: now })
-      }
-      if (formData.bpSystolic) {
-        vitalsToInsert.push({ patient_id: patient.id, type: 'Blood Pressure Systolic', value: formData.bpSystolic, unit: 'mmHg', recorded_at: now })
-      }
-      if (vitalsToInsert.length > 0) {
-        const { error: vitalsError } = await supabase.from('vitals').insert(vitalsToInsert)
-        if (vitalsError) throw new Error(`Vitals Error: ${vitalsError.message}`)
-      }
+      await supabase.from("vitals").insert([
+        { patient_id: patient.id, type: "BMI", value: formData.bmi, unit: "kg/m²", recorded_at: now },
+        { patient_id: patient.id, type: "Blood Pressure Systolic", value: formData.bpSystolic, unit: "mmHg", recorded_at: now },
+      ])
 
       // 3. Insert Diagnoses History
       const diagnosesToInsert = []
-      if (formData.historyHeartDisease) {
-        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Heart Disease', diagnosed_at: now })
-      }
-      if (formData.historyStroke) {
-        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Stroke', diagnosed_at: now })
-      }
-      if (diagnosesToInsert.length > 0) {
-        const { error: diagError } = await supabase.from('diagnoses').insert(diagnosesToInsert)
-        if (diagError) throw new Error(`Diagnoses Error: ${diagError.message}`)
+      if (formData.historyHeartDisease)
+        diagnosesToInsert.push({ patient_id: patient.id, condition: "Heart Disease", diagnosed_at: now })
+      if (formData.historyStroke)
+        diagnosesToInsert.push({ patient_id: patient.id, condition: "Stroke", diagnosed_at: now })
+      if (diagnosesToInsert.length > 0)
+        await supabase.from("diagnoses").insert(diagnosesToInsert)
+
+      // 4. Call local FastAPI /predict
+      const ageNum = parseInt(formData.age)
+      const ageGroup = Math.min(13, Math.max(1, Math.ceil(ageNum / 10)))
+      const bmiNum = parseFloat(formData.bmi) || 25
+      const bpHigh = parseInt(formData.bpSystolic) >= 130 ? 1.0 : 0.0
+
+      const mlPayload = {
+        HighBP: bpHigh,
+        HighChol: formData.highChol ? 1.0 : 0.0,
+        CholCheck: 1.0,
+        BMI: bmiNum,
+        Smoker: formData.smoker ? 1.0 : 0.0,
+        Stroke: formData.historyStroke ? 1.0 : 0.0,
+        HeartDiseaseorAttack: formData.historyHeartDisease ? 1.0 : 0.0,
+        PhysActivity: formData.physActivity ? 1.0 : 0.0,
+        Fruits: 1.0,
+        Veggies: 1.0,
+        HvyAlcoholConsump: 0.0,
+        AnyHealthcare: 1.0,
+        NoDocbcCost: 0.0,
+        GenHlth: parseFloat(formData.genHlth) || 3.0,
+        MentHlth: 0.0,
+        PhysHlth: 0.0,
+        DiffWalk: 0.0,
+        Sex: formData.gender === "Male" ? 1.0 : 0.0,
+        Age: ageGroup,
+        Education: 5.0,
+        Income: 6.0,
       }
 
-      // 4. Trigger ML Prediction Edge Function
-      const { data: predictionData, error: predictError } = await supabase.functions.invoke('predict-risk', {
-        body: { patient_id: patient.id, disease: 'Cardiovascular Disease' }
+      const mlRes = await fetch(`${API_URL}/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mlPayload),
       })
 
-      if (predictError || !predictionData) {
-        // Edge functions might return an error object inside the data if it threw an exception 
-        // that wasn't caught by the network layer
-        if (predictionData && predictionData.error) {
-           throw new Error(`ML Engine Error: ${predictionData.error}`)
-        }
-        throw new Error(`Edge Function Error: ${predictError?.message || 'Unknown error'}`)
+      if (!mlRes.ok) {
+        const err = await mlRes.json().catch(() => ({ detail: mlRes.statusText }))
+        throw new Error(`ML Engine Error: ${err.detail || mlRes.statusText}`)
       }
 
-      if (predictionData.error) {
-        throw new Error(`ML Engine Error: ${predictionData.error}`)
-      }
+      const prediction = await mlRes.json()
 
-      // 5. Navigate to the Prediction UI!
-      router.push(`/patients/${patient.id}/predictions/${predictionData.id}`)
-      
+      // 5. Save prediction to Supabase
+      const { error: predSaveErr } = await supabase.from("predictions").insert({
+        patient_id: patient.id,
+        disease: "Diabetes",
+        probability: prediction.probability,
+        severity: prediction.severity,
+        confidence: prediction.confidence,
+        model_version: prediction.model_version,
+        features_used: mlPayload,
+        created_by: user.id,
+      })
+
+      if (predSaveErr) console.warn("Prediction save warning:", predSaveErr.message)
+
+      // 6. Navigate to patient detail page
+      router.push(`/patients/${patient.id}`)
     } catch (err: any) {
       console.error(err)
       setError(err.message)
@@ -128,7 +157,9 @@ export default function NewPatientPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
-          <Link href="/patients"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link href="/patients">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
         </Button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Add New Patient & Run Inference</h1>
@@ -149,23 +180,24 @@ export default function NewPatientPage() {
               </div>
             )}
 
+            {/* Patient Identity */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input 
-                  id="firstName" 
-                  required 
+                <Input
+                  id="firstName"
+                  required
                   value={formData.firstName}
-                  onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input 
-                  id="lastName" 
+                <Input
+                  id="lastName"
                   required
                   value={formData.lastName}
-                  onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 />
               </div>
             </div>
@@ -173,19 +205,23 @@ export default function NewPatientPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="age">Age</Label>
-                <Input 
-                  id="age" 
-                  type="number" 
-                  required 
-                  min="1" 
+                <Input
+                  id="age"
+                  type="number"
+                  required
+                  min="1"
                   max="120"
                   value={formData.age}
-                  onChange={(e) => setFormData({...formData, age: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Gender</Label>
-                <Select required value={formData.gender} onValueChange={(val) => setFormData({...formData, gender: val})}>
+                <Select
+                  required
+                  value={formData.gender}
+                  onValueChange={(val) => setFormData({ ...formData, gender: val })}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
@@ -198,63 +234,85 @@ export default function NewPatientPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/50">
-              <div className="space-y-2">
-                <Label htmlFor="bmi">BMI</Label>
-                <Input 
-                  id="bmi" 
-                  type="number" 
-                  step="0.1" 
-                  placeholder="e.g. 25.5" 
-                  required
-                  value={formData.bmi}
-                  onChange={(e) => setFormData({...formData, bmi: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bpSystolic">Systolic Blood Pressure</Label>
-                <Input 
-                  id="bpSystolic" 
-                  type="number" 
-                  placeholder="e.g. 120" 
-                  required
-                  value={formData.bpSystolic}
-                  onChange={(e) => setFormData({...formData, bpSystolic: e.target.value})}
-                />
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-border/50 space-y-4">
-              <Label>Medical History Factors</Label>
-              <div className="flex items-center space-x-2">
-                <input 
-                  type="checkbox" 
-                  id="heart" 
-                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                  checked={formData.historyHeartDisease}
-                  onChange={(e) => setFormData({...formData, historyHeartDisease: e.target.checked})}
-                />
-                <label htmlFor="heart" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Prior Heart Disease or Attack
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input 
-                  type="checkbox" 
-                  id="stroke" 
-                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                  checked={formData.historyStroke}
-                  onChange={(e) => setFormData({...formData, historyStroke: e.target.checked})}
-                />
-                <label htmlFor="stroke" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Prior Stroke
-                </label>
+            {/* Clinical Measurements */}
+            <div className="pt-4 border-t border-border/50">
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Clinical Measurements</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="bmi">BMI</Label>
+                  <Input
+                    id="bmi"
+                    type="number"
+                    step="0.1"
+                    placeholder="e.g. 25.5"
+                    required
+                    value={formData.bmi}
+                    onChange={(e) => setFormData({ ...formData, bmi: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bpSystolic">Systolic Blood Pressure (mmHg)</Label>
+                  <Input
+                    id="bpSystolic"
+                    type="number"
+                    placeholder="e.g. 120"
+                    required
+                    value={formData.bpSystolic}
+                    onChange={(e) => setFormData({ ...formData, bpSystolic: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="genHlth">General Health (1=Excellent → 5=Poor)</Label>
+                  <Select
+                    value={formData.genHlth}
+                    onValueChange={(val) => setFormData({ ...formData, genHlth: val })}
+                  >
+                    <SelectTrigger id="genHlth">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 — Excellent</SelectItem>
+                      <SelectItem value="2">2 — Very Good</SelectItem>
+                      <SelectItem value="3">3 — Good</SelectItem>
+                      <SelectItem value="4">4 — Fair</SelectItem>
+                      <SelectItem value="5">5 — Poor</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
+            {/* Medical History */}
+            <div className="pt-4 border-t border-border/50 space-y-3">
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Medical History & Lifestyle</p>
+              {[
+                { key: "historyHeartDisease", label: "Prior Heart Disease or Attack" },
+                { key: "historyStroke", label: "Prior Stroke" },
+                { key: "highChol", label: "High Cholesterol" },
+                { key: "smoker", label: "Smoker (≥100 cigarettes in lifetime)" },
+                { key: "physActivity", label: "Physically Active (past 30 days)" },
+              ].map(({ key, label }) => (
+                <div key={key} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={key}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                    checked={formData[key as keyof typeof formData] as boolean}
+                    onChange={(e) => setFormData({ ...formData, [key]: e.target.checked })}
+                  />
+                  <label htmlFor={key} className="text-sm font-medium leading-none">
+                    {label}
+                  </label>
+                </div>
+              ))}
+            </div>
           </CardContent>
           <CardFooter className="border-t bg-muted/20 p-6">
-            <button type="submit" className="w-full h-12 uiverse-btn flex items-center justify-center text-base" disabled={loading}>
+            <button
+              type="submit"
+              className="w-full h-12 uiverse-btn flex items-center justify-center text-base"
+              disabled={loading}
+            >
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />

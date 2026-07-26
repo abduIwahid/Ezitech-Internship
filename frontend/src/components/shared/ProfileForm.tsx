@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createBrowserClient } from "@supabase/ssr"
-import { CheckCircle2, Mail, Shield, Building2, Phone, Stethoscope, FileText } from "lucide-react"
+import { CheckCircle2, Mail, Shield, Building2, Phone, Stethoscope } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 const ROLE_LABELS: Record<string, string> = {
@@ -40,7 +40,7 @@ export function ProfileForm({ user, profile, hospitals }: {
   const [department, setDepartment] = useState(profile?.department || "")
   const [specialty, setSpecialty] = useState(profile?.specialty || "")
   const [phone, setPhone] = useState(profile?.phone || "")
-  const [bio, setBio] = useState(profile?.bio || "")
+
   const [hospitalId, setHospitalId] = useState(profile?.hospital_id || "")
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -64,7 +64,6 @@ export function ProfileForm({ user, profile, hospitals }: {
           department,
           specialty,
           phone,
-          bio,
           hospital_id: hospitalId || null,
           avatar_url: avatarUrl,
         })
@@ -207,20 +206,7 @@ export function ProfileForm({ user, profile, hospitals }: {
         </div>
       </div>
 
-      {/* Bio */}
-      <div className="space-y-2">
-        <Label htmlFor="bio">
-          <FileText className="h-3.5 w-3.5 inline mr-1" /> Professional Bio
-        </Label>
-        <textarea
-          id="bio"
-          value={bio}
-          onChange={e => setBio(e.target.value)}
-          placeholder="Brief professional background, areas of expertise, research interests..."
-          rows={3}
-          className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring"
-        />
-      </div>
+
 
       {/* Footer */}
       {error && (

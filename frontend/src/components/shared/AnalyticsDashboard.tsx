@@ -133,6 +133,17 @@ export function AnalyticsDashboard({ predictions, patientsByHospital, alertStats
         <p className="text-sm text-muted-foreground mt-1">Population-level risk insights across all patients and hospitals.</p>
       </div>
 
+      {predictions.length === 0 && (
+        <div className="rounded-xl border border-dashed border-primary/30 bg-primary/5 p-6 text-center">
+          <TrendingUp className="h-8 w-8 mx-auto mb-2 text-primary/40" />
+          <p className="font-medium text-sm">No prediction data yet</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Analytics populate automatically as you add patients and run AI predictions.
+            Go to <span className="text-primary font-medium">Patients → Add Patient &amp; Predict</span> to get started.
+          </p>
+        </div>
+      )}
+
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard icon={Users} label="Total Predictions" value={predictions.length.toLocaleString()} sub="All time" />

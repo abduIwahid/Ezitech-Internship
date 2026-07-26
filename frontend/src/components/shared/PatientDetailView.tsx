@@ -24,6 +24,10 @@ function fmtDate(iso: string): string {
 function getPatientName(patient: any): string {
   const d = patient.demographics
   if (!d) return "Unknown Patient"
+  // Handle full_name or name field
+  if (d.full_name) return d.full_name
+  if (d.name) return d.name
+  // Handle split first/last (camelCase or snake_case)
   const first = d.first_name || d.firstName || ""
   const last = d.last_name || d.lastName || ""
   return `${first} ${last}`.trim() || "Unknown Patient"
@@ -37,9 +41,13 @@ interface PatientDetailViewProps {
 export function PatientDetailView({ patient, latestPrediction }: PatientDetailViewProps) {
   const name = getPatientName(patient)
   const d = patient.demographics || {}
-  const age = d.age || "—"
+  const age = d.age || (
+    (d.birth_date || d.dob)
+      ? Math.floor((Date.now() - new Date(d.birth_date || d.dob).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+      : null
+  )
   const gender = d.gender ? d.gender.charAt(0).toUpperCase() + d.gender.slice(1).toLowerCase() : "—"
-  const dob = d.birth_date ? fmtDate(d.birth_date) : "—"
+  const dob = d.birth_date || d.dob ? fmtDate(d.birth_date || d.dob) : "—"
 
   const vitalsColumns = [
     { header: "Type", cell: (v: any) => <span className="font-medium">{fmtLabel(v.type)}</span> },
