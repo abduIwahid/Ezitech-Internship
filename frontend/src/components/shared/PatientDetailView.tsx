@@ -1,11 +1,18 @@
 "use client"
 
+import { useEffect, useMemo, useState } from "react"
+import { createBrowserClient } from "@supabase/ssr"
+import { useRouter } from "next/navigation"
 import { PatientRiskCard } from "@/components/shared/PatientRiskCard"
 import { DataTable } from "@/components/shared/DataTable"
 import { RunPredictionButton } from "@/components/shared/RunPredictionButton"
 import Link from "next/link"
-import { ArrowLeft, User, Calendar, Activity, FlaskConical, Stethoscope, Heart } from "lucide-react"
+import { ArrowLeft, User, Calendar, Activity, FlaskConical, Stethoscope, Heart, Pencil, Trash2 } from "lucide-react"
 import { RiskBadge } from "@/components/shared/RiskBadge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 // Format snake_case → Title Case, with medical abbreviations
 function fmtLabel(str: string): string {
@@ -25,21 +32,67 @@ function fmtDate(iso: string): string {
 function getPatientName(patient: any): string {
   const d = patient.demographics
   if (!d) return "Unknown Patient"
-  // Handle full_name or name field
   if (d.full_name) return d.full_name
   if (d.name) return d.name
-  // Handle split first/last (camelCase or snake_case)
   const first = d.first_name || d.firstName || ""
   const last = d.last_name || d.lastName || ""
   return `${first} ${last}`.trim() || "Unknown Patient"
 }
 
+function getDoctorRecommendation(disease: string, severity: string) {
+  if (disease?.toLowerCase().includes("diabetes")) {
+    if (severity === "Critical") return "Endocrinologist + Emergency Care"
+    if (severity === "High") return "Endocrinologist"
+    if (severity === "Moderate") return "Primary Care Physician"
+    return "General Practitioner"
+  }
+  if (severity === "Critical") return "Specialist Referral"
+  if (severity === "High") return "Internal Medicine"
+  if (severity === "Moderate") return "Primary Care Physician"
+  return "General Practitioner"
+}
+
 interface PatientDetailViewProps {
   patient: any
   latestPrediction: any
+  isAdmin?: boolean
 }
 
-export function PatientDetailView({ patient, latestPrediction }: PatientDetailViewProps) {
+export function PatientDetailView({ patient, latestPrediction, isAdmin = false }: PatientDetailViewProps) {
+  const router = useRouter()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  const [editMode, setEditMode] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [statusMessage, setStatusMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [newLab, setNewLab] = useState({
+    test_name: "",
+    value: "",
+    unit: "",
+    recorded_at: new Date().toISOString().slice(0, 10),
+  })
+
+  const [demographics, setDemographics] = useState({
+    first_name: patient.demographics?.first_name || "",
+    last_name: patient.demographics?.last_name || "",
+    age: String(patient.demographics?.age || ""),
+    gender: patient.demographics?.gender || "",
+  })
+
+  useEffect(() => {
+    setDemographics({
+      first_name: patient.demographics?.first_name || "",
+      last_name: patient.demographics?.last_name || "",
+      age: String(patient.demographics?.age || ""),
+      gender: patient.demographics?.gender || "",
+    })
+  }, [patient])
+
   const name = getPatientName(patient)
   const d = patient.demographics || {}
   const age = d.age || (
@@ -49,6 +102,67 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
   )
   const gender = d.gender ? d.gender.charAt(0).toUpperCase() + d.gender.slice(1).toLowerCase() : "—"
   const dob = d.birth_date || d.dob ? fmtDate(d.birth_date || d.dob) : "—"
+
+  const handleSaveUpdates = async () => {
+    setSaving(true)
+    setErrorMessage(null)
+    setStatusMessage(null)
+
+    try {
+      const updatePayload: any = {
+        demographics: {
+          ...patient.demographics,
+          first_name: demographics.first_name,
+          last_name: demographics.last_name,
+          gender: demographics.gender,
+          age: Number(demographics.age) || null,
+        }
+      }
+
+      const { error } = await supabase
+        .from('patients')
+        .update(updatePayload)
+        .eq('id', patient.id)
+
+      if (error) throw error
+
+      if (newLab.test_name && newLab.value) {
+        const { error: labError } = await supabase.from('lab_results').insert({
+          patient_id: patient.id,
+          test_name: newLab.test_name,
+          value: newLab.value,
+          unit: newLab.unit || "",
+          recorded_at: newLab.recorded_at,
+        })
+        if (labError) throw labError
+      }
+
+      setStatusMessage('Patient record updated successfully.')
+      setNewLab({ test_name: "", value: "", unit: "", recorded_at: new Date().toISOString().slice(0, 10) })
+      setEditMode(false)
+      router.refresh()
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Unable to save patient updates.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDeletePatient = async () => {
+    if (!window.confirm('Delete this patient record? This action cannot be undone.')) return
+    setDeleteLoading(true)
+    setErrorMessage(null)
+    setStatusMessage(null)
+
+    const { error } = await supabase.from('patients').delete().eq('id', patient.id)
+    if (error) {
+      setErrorMessage(error.message)
+      setDeleteLoading(false)
+      return
+    }
+
+    router.push('/patients')
+  }
 
   const vitalsColumns = [
     { header: "Type", cell: (v: any) => <span className="font-medium">{fmtLabel(v.type)}</span> },
@@ -69,40 +183,154 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start gap-4">
-        <Link href="/patients">
-          <button className="mt-1 h-8 w-8 rounded-lg border flex items-center justify-center hover:bg-muted transition-colors">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-        </Link>
-        <div className="flex-1">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <span className="text-lg font-bold text-primary">
-                {name.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">{name}</h1>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground mt-0.5">
-                <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">{patient.mrn}</span>
-                {age !== "—" && <span>Age {age}</span>}
-                {gender !== "—" && <span>{gender}</span>}
-                {dob !== "—" && <span>DOB: {dob}</span>}
+      <div className="flex flex-col gap-6 lg:gap-0 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex items-start gap-4">
+          <Link href="/patients">
+            <button className="mt-1 h-8 w-8 rounded-lg border flex items-center justify-center hover:bg-muted transition-colors">
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          </Link>
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <span className="text-lg font-bold text-primary">
+                  {name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight">{name}</h1>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground mt-0.5">
+                  <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">{patient.mrn}</span>
+                  {age !== "—" && <span>Age {age}</span>}
+                  {gender !== "—" && <span>{gender}</span>}
+                  {dob !== "—" && <span>DOB: {dob}</span>}
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {latestPrediction && (
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Latest Risk:</span>
-            <RiskBadge severity={latestPrediction.severity} />
+
+        {isAdmin && (
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="outline" onClick={() => setEditMode((open) => !open)}>
+              <Pencil className="mr-2 h-4 w-4" /> {editMode ? 'Cancel Edit' : 'Update Patient'}
+            </Button>
+            <Button variant="destructive" onClick={handleDeletePatient} disabled={deleteLoading}>
+              <Trash2 className="mr-2 h-4 w-4" /> {deleteLoading ? 'Deleting…' : 'Delete'}
+            </Button>
           </div>
         )}
       </div>
 
-      {/* Quick Stats Row */}
+      {editMode && (
+        <div className="bg-card border rounded-xl p-6 shadow-sm space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-semibold">Admin Update Mode</h2>
+              <p className="text-sm text-muted-foreground">Edit patient demographics and add new lab details.</p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                id="firstName"
+                value={demographics.first_name}
+                onChange={(e) => setDemographics({ ...demographics, first_name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                id="lastName"
+                value={demographics.last_name}
+                onChange={(e) => setDemographics({ ...demographics, last_name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                id="age"
+                type="number"
+                value={demographics.age}
+                onChange={(e) => setDemographics({ ...demographics, age: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Select value={demographics.gender} onValueChange={(value) => setDemographics({ ...demographics, gender: value })}>
+                <SelectTrigger id="gender">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="space-y-3 pt-4 border-t border-border/50">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Add Lab Result</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="labTest">Test Name</Label>
+                <Input
+                  id="labTest"
+                  value={newLab.test_name}
+                  onChange={(e) => setNewLab({ ...newLab, test_name: e.target.value })}
+                  placeholder="e.g. HbA1c"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="labValue">Result</Label>
+                <Input
+                  id="labValue"
+                  value={newLab.value}
+                  onChange={(e) => setNewLab({ ...newLab, value: e.target.value })}
+                  placeholder="e.g. 6.8"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="labUnit">Unit</Label>
+                <Input
+                  id="labUnit"
+                  value={newLab.unit}
+                  onChange={(e) => setNewLab({ ...newLab, unit: e.target.value })}
+                  placeholder="e.g. %"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="labDate">Date</Label>
+                <Input
+                  id="labDate"
+                  type="date"
+                  value={newLab.recorded_at}
+                  onChange={(e) => setNewLab({ ...newLab, recorded_at: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
+          {(statusMessage || errorMessage) && (
+            <div className={`rounded-lg p-4 text-sm ${statusMessage ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-destructive/10 text-destructive border border-destructive/20'}`}>
+              {statusMessage || errorMessage}
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={handleSaveUpdates} disabled={saving}>
+              {saving ? 'Saving updates…' : 'Save changes'}
+            </Button>
+            <Button variant="outline" onClick={() => setEditMode(false)}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-card border rounded-xl p-4 shadow-sm">
           <p className="text-xs text-muted-foreground flex items-center gap-1"><User className="h-3 w-3" /> Gender</p>
@@ -122,9 +350,7 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
         </div>
       </div>
 
-      {/* Main Grid */}
       <div className="grid gap-6 md:grid-cols-3">
-        {/* Prediction Card */}
         <div className="md:col-span-1 space-y-4">
           {latestPrediction ? (
             <PatientRiskCard
@@ -146,7 +372,6 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
             </div>
           )}
 
-          {/* Re-run prediction below existing card */}
           {latestPrediction && (
             <div className="bg-card border rounded-xl p-4 shadow-sm space-y-3">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Update Assessment</h3>
@@ -154,7 +379,6 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
             </div>
           )}
 
-          {/* Prediction History (if multiple) */}
           {sortedPreds.length > 1 && (
             <div className="bg-card border rounded-xl p-4 shadow-sm">
               <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
@@ -175,7 +399,6 @@ export function PatientDetailView({ patient, latestPrediction }: PatientDetailVi
           )}
         </div>
 
-        {/* Vitals + Labs */}
         <div className="md:col-span-2 space-y-6">
           <div className="bg-card border rounded-xl p-6 shadow-sm">
             <h2 className="text-base font-semibold mb-4 flex items-center gap-2">

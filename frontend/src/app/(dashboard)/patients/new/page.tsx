@@ -30,6 +30,9 @@ export default function NewPatientPage() {
     historyStroke: false,
     physActivity: true,
     genHlth: "3",
+    labs: [
+      { testName: "", value: "", unit: "", recordedAt: new Date().toISOString().slice(0, 10) }
+    ]
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,7 +80,22 @@ export default function NewPatientPage() {
         { patient_id: patient.id, type: "Blood Pressure Systolic", value: formData.bpSystolic, unit: "mmHg", recorded_at: now },
       ])
 
-      // 3. Insert Diagnoses History
+      // 3. Insert Lab Results
+      const labRows = formData.labs
+        .filter(l => l.testName.trim() && l.value.trim())
+        .map((lab) => ({
+          patient_id: patient.id,
+          test_name: lab.testName,
+          value: lab.value,
+          unit: lab.unit,
+          recorded_at: lab.recordedAt || now,
+        }))
+
+      if (labRows.length > 0) {
+        await supabase.from("lab_results").insert(labRows)
+      }
+
+      // 4. Insert Diagnoses History
       const diagnosesToInsert = []
       if (formData.historyHeartDisease)
         diagnosesToInsert.push({ patient_id: patient.id, condition: "Heart Disease", diagnosed_at: now })
@@ -287,6 +305,96 @@ export default function NewPatientPage() {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+            </div>
+
+            {/* Lab Results */}
+            <div className="pt-4 border-t border-border/50 space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Lab Results</p>
+                <button
+                  type="button"
+                  onClick={() => setFormData({
+                    ...formData,
+                    labs: [
+                      ...formData.labs,
+                      { testName: "", value: "", unit: "", recordedAt: new Date().toISOString().slice(0, 10) }
+                    ]
+                  })}
+                  className="text-sm text-primary hover:underline"
+                >
+                  + Add lab
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.labs.map((lab, index) => (
+                  <div key={index} className="grid gap-4 sm:grid-cols-4 items-end">
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor={`lab-${index}-name`}>Test Name</Label>
+                      <Input
+                        id={`lab-${index}-name`}
+                        value={lab.testName}
+                        onChange={(e) => {
+                          const labs = [...formData.labs]
+                          labs[index].testName = e.target.value
+                          setFormData({ ...formData, labs })
+                        }}
+                        placeholder="e.g. HbA1c"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`lab-${index}-value`}>Value</Label>
+                      <Input
+                        id={`lab-${index}-value`}
+                        value={lab.value}
+                        onChange={(e) => {
+                          const labs = [...formData.labs]
+                          labs[index].value = e.target.value
+                          setFormData({ ...formData, labs })
+                        }}
+                        placeholder="e.g. 6.8"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`lab-${index}-unit`}>Unit</Label>
+                      <Input
+                        id={`lab-${index}-unit`}
+                        value={lab.unit}
+                        onChange={(e) => {
+                          const labs = [...formData.labs]
+                          labs[index].unit = e.target.value
+                          setFormData({ ...formData, labs })
+                        }}
+                        placeholder="e.g. %"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`lab-${index}-date`}>Date</Label>
+                      <Input
+                        id={`lab-${index}-date`}
+                        type="date"
+                        value={lab.recordedAt}
+                        onChange={(e) => {
+                          const labs = [...formData.labs]
+                          labs[index].recordedAt = e.target.value
+                          setFormData({ ...formData, labs })
+                        }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const labs = [...formData.labs]
+                        labs.splice(index, 1)
+                        setFormData({ ...formData, labs })
+                      }}
+                      className="text-sm text-destructive hover:underline self-start pt-7"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
 

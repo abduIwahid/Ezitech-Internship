@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3 } from "lucide-react"
+import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3, User } from "lucide-react"
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect } from "react"
 
@@ -24,16 +24,26 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
   }
 
   const [isAdmin, setIsAdmin] = useState(false)
+  const [role, setRole] = useState<string | null>(null)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
         supabase.from('profiles').select('role').eq('id', user.id).single().then(({ data }) => {
-          if (data) setIsAdmin(['super_admin', 'hospital_admin', 'data_scientist'].includes(data.role))
+          if (data) {
+            setRole(data.role)
+            setIsAdmin(['super_admin', 'hospital_admin', 'data_scientist'].includes(data.role))
+          }
         })
       }
     })
   }, [])
+
+  const roleItems = role === 'doctor'
+    ? [{ name: 'Doctor Hub', href: '/assistant', icon: Bot }, { name: 'Clinical Patients', href: '/patients', icon: Users }]
+    : role === 'patient'
+      ? [{ name: 'My Health', href: '/patients', icon: User }, { name: 'My Alerts', href: '/alerts', icon: Bell }]
+      : []
 
   const navItems = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -41,7 +51,8 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
     { name: "Alerts Center", href: "/alerts", icon: Bell },
     { name: "AI Assistant", href: "/assistant", icon: Bot },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
-    ...(isAdmin ? [{ name: "Admin", href: "/admin", icon: ShieldCheck }] : []),
+    ...roleItems,
+    ...(isAdmin ? [{ name: "Admin Console", href: "/admin", icon: ShieldCheck }] : []),
     { name: "Settings", href: "/settings", icon: Settings },
   ]
 
@@ -55,6 +66,11 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
           <span className="text-lg font-bold tracking-tight text-primary">MediSight AI</span>
         </div>
       </div>
+      {role && (
+        <div className="border-b px-4 py-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+          {role === 'doctor' ? 'Doctor Dashboard' : role === 'patient' ? 'Patient Portal' : 'Administrator Section'}
+        </div>
+      )}
       <div className="flex-1 overflow-auto py-6">
         <nav className="grid gap-2 px-3">
           {navItems.map((item) => (

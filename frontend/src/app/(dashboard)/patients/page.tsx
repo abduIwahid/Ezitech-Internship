@@ -16,19 +16,27 @@ export default async function PatientListPage({
     { cookies: { get(name: string) { return cookieStore.get(name)?.value } } }
   )
 
-  // Fetch latest 25 patients with their predictions — limited for performance
-  const { data: patients, error } = await supabase
-    .from('patients')
-    .select(`
-      id, 
-      mrn, 
-      demographics,
-      created_at,
-      hospitals(name),
-      predictions(severity, probability, disease, created_at)
-    `)
-    .order('created_at', { ascending: false })
-    .limit(25)
+  const [{ data: patients, error }, { data: userResult }] = await Promise.all([
+    supabase
+      .from('patients')
+      .select(`
+        id, 
+        mrn, 
+        demographics,
+        created_at,
+        hospitals(name),
+        predictions(severity, probability, disease, created_at)
+      `)
+      .order('created_at', { ascending: false })
+      .limit(25),
+    supabase.auth.getUser()
+  ])
+
+  const profile = userResult?.user
+    ? await supabase.from('profiles').select('role').eq('id', userResult.user.id).single()
+    : { data: null }
+
+  const isAdmin = Boolean(profile.data && ['super_admin', 'hospital_admin', 'data_scientist'].includes(profile.data.role))
 
   if (error) {
     console.error("Supabase Error fetching patients:", error)
@@ -40,6 +48,6 @@ export default async function PatientListPage({
     )
   }
 
-  return <PatientListView patients={patients || []} initialSearch={searchParams?.search || ""} />
+  return <PatientListView patients={patients || []} initialSearch={searchParams?.search || ""} isAdmin={isAdmin} />
 }
 

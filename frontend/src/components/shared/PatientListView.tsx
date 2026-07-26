@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
+import { createBrowserClient } from "@supabase/ssr"
 import { DataTable } from "@/components/shared/DataTable"
 import { RiskBadge } from "@/components/shared/RiskBadge"
 import Link from "next/link"
-import { Plus, Search, Users } from "lucide-react"
+import { Plus, Search, Users, Trash2, Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 // Format vital/lab type names from snake_case to Title Case
@@ -62,10 +64,33 @@ function getLatestSeverity(p: any): string | null {
 interface PatientListViewProps {
   patients: any[]
   initialSearch?: string
+  isAdmin?: boolean
 }
 
-export function PatientListView({ patients, initialSearch = "" }: PatientListViewProps) {
+export function PatientListView({ patients, initialSearch = "", isAdmin = false }: PatientListViewProps) {
   const [query, setQuery] = useState(initialSearch)
+  const router = useRouter()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  const handleDeletePatient = async (patientId: string) => {
+    if (!window.confirm('Delete this patient record? This action cannot be undone.')) return
+    setDeleteError(null)
+    setDeletingId(patientId)
+
+    const { error } = await supabase.from('patients').delete().eq('id', patientId)
+    if (error) {
+      setDeleteError(error.message)
+      setDeletingId(null)
+      return
+    }
+
+    router.refresh()
+  }
 
   useEffect(() => {
     setQuery(initialSearch)
@@ -153,15 +178,37 @@ export function PatientListView({ patients, initialSearch = "" }: PatientListVie
     {
       header: "Actions",
       cell: (p: any) => (
-        <Link href={`/patients/${p.id}`} className="text-sm font-medium text-primary hover:underline">
-          View Details
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href={`/patients/${p.id}`} className="text-sm font-medium text-primary hover:underline">
+            View
+          </Link>
+          {isAdmin && (
+            <>
+              <Link href={`/patients/${p.id}`} className="text-sm text-foreground/80 hover:text-foreground underline">
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDeletePatient(p.id)}
+                disabled={deletingId === p.id}
+                className="text-sm text-destructive underline disabled:cursor-not-allowed disabled:text-destructive/50"
+              >
+                {deletingId === p.id ? 'Deleting…' : 'Delete'}
+              </button>
+            </>
+          )}
+        </div>
       )
     }
   ]
 
   return (
     <div className="space-y-5">
+      {deleteError && (
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
+          {deleteError}
+        </div>
+      )}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Patients Panel</h1>

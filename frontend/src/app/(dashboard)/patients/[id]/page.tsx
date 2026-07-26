@@ -28,6 +28,13 @@ export default async function PatientDetailPage({ params }: { params: { id: stri
 
   if (!patient) return notFound()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data: profile } = user
+    ? await supabase.from('profiles').select('role').eq('id', user.id).single()
+    : { data: null }
+
+  const isAdmin = Boolean(profile && ['super_admin', 'hospital_admin', 'data_scientist'].includes(profile.role))
+
   // Get the latest prediction
   const latestPrediction = patient.predictions?.sort((a:any, b:any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]
 
@@ -35,6 +42,7 @@ export default async function PatientDetailPage({ params }: { params: { id: stri
     <PatientDetailView 
       patient={patient} 
       latestPrediction={latestPrediction} 
+      isAdmin={isAdmin}
     />
   )
 }

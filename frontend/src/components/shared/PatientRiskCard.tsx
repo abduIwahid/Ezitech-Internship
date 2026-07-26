@@ -14,7 +14,17 @@ interface PatientRiskCardProps {
   predictionId: string
 }
 
+function getRecommendedDoctor(disease: string, severity: string) {
+  const base = disease?.toLowerCase().includes("diabetes") ? "Endocrinologist" : "Primary Care Physician"
+  if (severity === "Critical") return `${base} or Emergency Specialist`
+  if (severity === "High") return `${base}`
+  if (severity === "Moderate") return "Primary Care Physician"
+  return "General Practitioner"
+}
+
 export function PatientRiskCard({ disease, probability, confidence, severity, patientId, predictionId }: PatientRiskCardProps) {
+  const recommended = getRecommendedDoctor(disease, String(severity))
+
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -37,6 +47,12 @@ export function PatientRiskCard({ disease, probability, confidence, severity, pa
             <div className="text-2xl font-medium">{(confidence * 100).toFixed(1)}%</div>
           </div>
         </div>
+
+        <div className="rounded-2xl border border-border/70 bg-muted/50 p-4 mt-6 text-sm">
+          <div className="text-muted-foreground text-xs uppercase tracking-[0.18em] mb-2">Recommended Care</div>
+          <p className="font-semibold">{recommended}</p>
+        </div>
+
         <div className="mt-6">
           <Button asChild className="w-full" variant="outline">
             <Link href={`/patients/${patientId}/predictions/${predictionId}`}>
