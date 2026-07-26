@@ -14,25 +14,23 @@ export default async function SettingsPage() {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    redirect("/login")
-  }
+  if (!user) redirect("/login")
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  const [{ data: profile }, { data: hospitals }] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('hospitals').select('id, name').order('name')
+  ])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-3xl">
       <div>
-        <h3 className="text-lg font-medium">Profile Settings</h3>
-        <p className="text-sm text-muted-foreground">Manage your account settings and preferences.</p>
+        <h1 className="text-2xl font-bold tracking-tight">Profile & Settings</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Manage your account details, clinical role, and preferences.
+        </p>
       </div>
       <div className="bg-card border rounded-xl p-6 shadow-sm">
-        <ProfileForm user={user} profile={profile} />
+        <ProfileForm user={user} profile={profile} hospitals={hospitals || []} />
       </div>
     </div>
   )

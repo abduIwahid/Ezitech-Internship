@@ -56,7 +56,7 @@ export function AIChatPanel({ patientId }: AIChatPanelProps) {
 
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/ai-assistant-chat`, {
         method: "POST",
         headers: {
@@ -69,29 +69,37 @@ export function AIChatPanel({ patientId }: AIChatPanelProps) {
         })
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        throw new Error("Failed to communicate with AI Assistant")
+        // Surface the actual server error to the user
+        const errMsg = data?.error || data?.message || `Service error (${response.status})`
+        // Check if it's an API key configuration issue
+        const isKeyError = errMsg.toLowerCase().includes("api key") || errMsg.toLowerCase().includes("gemini") || response.status === 500
+        const displayMsg = isKeyError
+          ? "⚙️ The AI service is not configured yet. The Supabase Edge Function requires a GEMINI_API_KEY secret. Ask your administrator to configure it in the Supabase dashboard under Settings → Edge Functions → Secrets."
+          : `AI service error: ${errMsg}`
+        setMessages((prev) => [...prev, { id: Date.now().toString(), role: "assistant", content: displayMsg }])
+        return
       }
 
-      const data = await response.json()
-      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: data.reply
+        content: data.reply || "I received your message but couldn't generate a response."
       }
-
       setMessages((prev) => [...prev, assistantMessage])
-    } catch (error) {
-      console.error(error)
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now().toString(), role: "assistant", content: "Sorry, I encountered an error. Please try again." }
-      ])
+    } catch (error: any) {
+      const isNetwork = error?.message?.includes("fetch") || error?.name === "TypeError"
+      const displayMsg = isNetwork
+        ? "🔌 Could not reach the AI service. Check your internet connection and try again."
+        : `Unexpected error: ${error?.message || "Unknown error"}`
+      setMessages((prev) => [...prev, { id: Date.now().toString(), role: "assistant", content: displayMsg }])
     } finally {
       setIsLoading(false)
     }
   }
+
 
   return (
     <Card className="flex flex-col h-[700px] border shadow-sm">

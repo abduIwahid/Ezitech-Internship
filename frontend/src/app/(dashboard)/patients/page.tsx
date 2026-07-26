@@ -12,15 +12,19 @@ export default async function PatientListPage() {
     { cookies: { get(name: string) { return cookieStore.get(name)?.value } } }
   )
 
-  // Fetch patients and their latest prediction severity
+  // Fetch latest 25 patients with their predictions — limited for performance
   const { data: patients, error } = await supabase
     .from('patients')
     .select(`
       id, 
       mrn, 
-      demographics, 
-      predictions(severity, created_at)
+      demographics,
+      created_at,
+      hospitals(name),
+      predictions(severity, probability, disease, created_at)
     `)
+    .order('created_at', { ascending: false })
+    .limit(25)
 
   if (error) {
     console.error("Supabase Error fetching patients:", error)
