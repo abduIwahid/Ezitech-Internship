@@ -11,8 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-
 export default function NewPatientPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -36,6 +34,7 @@ export default function NewPatientPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
     setError(null)
 
@@ -117,15 +116,14 @@ export default function NewPatientPage() {
         Income: 6.0,
       }
 
-      const mlRes = await fetch(`${API_URL}/predict`, {
+      const mlRes = await fetch("/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(mlPayload),
       })
 
       if (!mlRes.ok) {
-        const err = await mlRes.json().catch(() => ({ detail: mlRes.statusText }))
-        throw new Error(`ML Engine Error: ${err.detail || mlRes.statusText}`)
+        throw new Error("Prediction request failed")
       }
 
       const prediction = await mlRes.json()
@@ -158,13 +156,13 @@ export default function NewPatientPage() {
       router.push(`/patients/${patient.id}`)
     } catch (err: any) {
       console.error(err)
-      setError(err.message || "An unexpected error occurred. Is the ML service running at localhost:8000?")
+      setError(err.message || "An unexpected error occurred while creating the patient and prediction.")
       setLoading(false)
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/patients">
@@ -191,7 +189,7 @@ export default function NewPatientPage() {
             )}
 
             {/* Patient Identity */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
                 <Input
@@ -212,7 +210,7 @@ export default function NewPatientPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="age">Age</Label>
                 <Input
@@ -247,7 +245,7 @@ export default function NewPatientPage() {
             {/* Clinical Measurements */}
             <div className="pt-4 border-t border-border/50">
               <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Clinical Measurements</p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="bmi">BMI</Label>
                   <Input

@@ -4,7 +4,11 @@ import { PatientListView } from "@/components/shared/PatientListView"
 
 export const dynamic = 'force-dynamic'
 
-export default async function PatientListPage() {
+export default async function PatientListPage({
+  searchParams,
+}: {
+  searchParams?: { search?: string }
+}) {
   const cookieStore = cookies()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -29,13 +33,13 @@ export default async function PatientListPage() {
   if (error) {
     console.error("Supabase Error fetching patients:", error)
     return (
-      <div className="p-6 bg-destructive/10 text-destructive rounded-xl border border-destructive/20">
+      <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-6 text-destructive">
         <h2 className="font-bold">Error loading patients</h2>
         <p className="text-sm">{error.message}</p>
       </div>
     )
   }
 
-  return <PatientListView patients={patients || []} />
+  return <PatientListView patients={patients || []} initialSearch={searchParams?.search || ""} />
 }
 

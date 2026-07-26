@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Loader2, Zap } from "lucide-react"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-
 interface RunPredictionButtonProps {
   patient: any
 }
@@ -62,29 +60,28 @@ export function RunPredictionButton({ patient }: RunPredictionButtonProps) {
   const supabase = createClient()
 
   const handleRunPrediction = async () => {
+    if (loading) return
     setLoading(true)
     setError(null)
 
     try {
       const mlPayload = buildMLPayload(patient)
 
-      const mlRes = await fetch(`${API_URL}/predict`, {
+      const mlRes = await fetch("/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(mlPayload),
       })
 
       if (!mlRes.ok) {
-        const err = await mlRes.json().catch(() => ({ detail: mlRes.statusText }))
-        throw new Error(`ML Error: ${err.detail || mlRes.statusText}`)
+        throw new Error("Prediction request failed")
       }
 
       const prediction = await mlRes.json()
 
-      // Save prediction to Supabase
       const { error: predErr } = await supabase.from("predictions").insert({
         patient_id: patient.id,
-        disease: "Diabetes",
+        disease: prediction.disease || "Diabetes",
         probability: prediction.probability,
         severity: prediction.severity,
         confidence: prediction.confidence,
@@ -93,7 +90,6 @@ export function RunPredictionButton({ patient }: RunPredictionButtonProps) {
 
       if (predErr) throw new Error(`Save error: ${predErr.message}`)
 
-      // Auto-create alert for High/Critical risk
       if (prediction.severity === "High" || prediction.severity === "Critical") {
         await supabase.from("alerts").insert({
           patient_id: patient.id,
@@ -105,7 +101,7 @@ export function RunPredictionButton({ patient }: RunPredictionButtonProps) {
 
       router.refresh()
     } catch (err: any) {
-      setError(err.message || "Prediction failed. Is the ML service running?")
+      setError(err.message || "Prediction failed. Please try again.")
       setLoading(false)
     }
   }
@@ -115,7 +111,7 @@ export function RunPredictionButton({ patient }: RunPredictionButtonProps) {
       <button
         onClick={handleRunPrediction}
         disabled={loading}
-        className="w-full h-10 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed px-4"
+        className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? (
           <>
@@ -130,7 +126,7 @@ export function RunPredictionButton({ patient }: RunPredictionButtonProps) {
         )}
       </button>
       {error && (
-        <p className="text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2 border border-destructive/20">
+        <p className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive">
           {error}
         </p>
       )}

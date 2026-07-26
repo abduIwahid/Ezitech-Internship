@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { DataTable } from "@/components/shared/DataTable"
 import { RiskBadge } from "@/components/shared/RiskBadge"
 import Link from "next/link"
@@ -61,20 +61,34 @@ function getLatestSeverity(p: any): string | null {
 
 interface PatientListViewProps {
   patients: any[]
+  initialSearch?: string
 }
 
-export function PatientListView({ patients }: PatientListViewProps) {
-  const [query, setQuery] = useState("")
+export function PatientListView({ patients, initialSearch = "" }: PatientListViewProps) {
+  const [query, setQuery] = useState(initialSearch)
+
+  useEffect(() => {
+    setQuery(initialSearch)
+  }, [initialSearch])
+
+  const normalizedPatients = useMemo(() => {
+    const seen = new Set<string>()
+    return patients.filter((patient) => {
+      if (!patient?.id || seen.has(patient.id)) return false
+      seen.add(patient.id)
+      return true
+    })
+  }, [patients])
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return patients
+    if (!query.trim()) return normalizedPatients
     const q = query.toLowerCase()
-    return patients.filter(p => {
+    return normalizedPatients.filter(p => {
       const name = getPatientName(p).toLowerCase()
       const mrn = (p.mrn || "").toLowerCase()
       return name.includes(q) || mrn.includes(q)
     })
-  }, [patients, query])
+  }, [normalizedPatients, query])
 
   const columns = [
     {
@@ -89,7 +103,7 @@ export function PatientListView({ patients }: PatientListViewProps) {
         const name = getPatientName(p)
         return (
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
               <span className="text-xs font-semibold text-primary">
                 {name !== "—" ? name.charAt(0).toUpperCase() : "?"}
               </span>
@@ -139,7 +153,7 @@ export function PatientListView({ patients }: PatientListViewProps) {
     {
       header: "Actions",
       cell: (p: any) => (
-        <Link href={`/patients/${p.id}`} className="text-primary font-medium hover:underline text-sm">
+        <Link href={`/patients/${p.id}`} className="text-sm font-medium text-primary hover:underline">
           View Details
         </Link>
       )
@@ -148,22 +162,21 @@ export function PatientListView({ patients }: PatientListViewProps) {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Patients Panel</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">
-            Showing {filtered.length} of {patients.length} most recent records.
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            Showing {filtered.length} of {normalizedPatients.length} most recent records.
           </p>
         </div>
         <Link href="/patients/new" prefetch={true} className="uiverse-btn flex-shrink-0">
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="mr-2 h-4 w-4" />
           Add Patient & Predict
         </Link>
       </div>
 
-      {/* Search bar */}
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search by name or MRN..."
           value={query}
@@ -172,10 +185,10 @@ export function PatientListView({ patients }: PatientListViewProps) {
         />
       </div>
 
-      <div className="bg-card border rounded-xl shadow-sm uiverse-card overflow-hidden">
+      <div className="overflow-hidden rounded-xl border bg-card shadow-sm uiverse-card">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-            <Users className="h-10 w-10 mb-3 opacity-30" />
+            <Users className="mb-3 h-10 w-10 opacity-30" />
             <p className="text-sm">No patients match your search.</p>
           </div>
         ) : (
