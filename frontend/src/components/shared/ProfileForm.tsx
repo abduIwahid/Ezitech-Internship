@@ -40,6 +40,10 @@ export function ProfileForm({ user, profile, hospitals }: {
   const [department, setDepartment] = useState(profile?.department || "")
   const [specialty, setSpecialty] = useState(profile?.specialty || "")
   const [phone, setPhone] = useState(profile?.phone || "")
+  const [bio, setBio] = useState(profile?.bio || "")
+  const [consultationFee, setConsultationFee] = useState(profile?.consultation_fee ? String(profile.consultation_fee) : "")
+  const [servicesString, setServicesString] = useState(Array.isArray(profile?.services) ? profile.services.join(", ") : "")
+  const [available, setAvailable] = useState(profile?.available ?? true)
 
   const [hospitalId, setHospitalId] = useState(profile?.hospital_id || "")
   const [saving, setSaving] = useState(false)
@@ -64,6 +68,10 @@ export function ProfileForm({ user, profile, hospitals }: {
           department,
           specialty,
           phone,
+          bio,
+          available,
+          consultation_fee: consultationFee ? Number(consultationFee) : null,
+          services: servicesString.split(',').map((item) => item.trim()).filter(Boolean),
           hospital_id: hospitalId || null,
           avatar_url: avatarUrl,
         })
@@ -203,6 +211,51 @@ export function ProfileForm({ user, profile, hospitals }: {
               </Select>
             </div>
           )}
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Doctor Profile</h3>
+          <div className="grid gap-4">
+            <div className="flex items-center gap-2">
+              <input
+                id="available"
+                type="checkbox"
+                checked={available}
+                onChange={(event) => setAvailable(event.target.checked)}
+                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+              />
+              <Label htmlFor="available">Accepting new patient referrals</Label>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="consultationFee">Consultation Fee</Label>
+              <Input
+                id="consultationFee"
+                type="number"
+                value={consultationFee}
+                onChange={(e) => setConsultationFee(e.target.value)}
+                placeholder="e.g. 150"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="services">Services / Specialties</Label>
+              <Input
+                id="services"
+                value={servicesString}
+                onChange={(e) => setServicesString(e.target.value)}
+                placeholder="e.g. Diabetes care, Hypertension follow-up"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="bio">Profile Summary</Label>
+              <textarea
+                id="bio"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="min-h-[120px] w-full rounded-md border border-input bg-input px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="Describe your specialties, clinical philosophy, and experience."
+              />
+            </div>
+          </div>
         </div>
       </div>
 

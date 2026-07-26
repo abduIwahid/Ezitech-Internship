@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3, User } from "lucide-react"
+import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3, User, Stethoscope } from "lucide-react"
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect } from "react"
 
@@ -48,6 +48,7 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
   const navItems = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Patients", href: "/patients", icon: Users },
+    { name: "Doctors", href: "/doctors", icon: Stethoscope },
     { name: "Alerts Center", href: "/alerts", icon: Bell },
     { name: "AI Assistant", href: "/assistant", icon: Bot },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -57,7 +58,7 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
   ]
 
   return (
-    <div className={cn("flex h-full w-72 flex-col border-r bg-card/95 backdrop-blur-xl shadow-sm md:w-64", className)}>
+    <div className={cn("flex h-full w-64 flex-col border-r bg-card/95 backdrop-blur-xl shadow-sm md:w-64", className)}>
       <div className="flex h-16 items-center border-b px-4">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
