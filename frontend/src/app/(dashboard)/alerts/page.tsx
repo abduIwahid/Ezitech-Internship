@@ -27,7 +27,7 @@ export default function AlertsPage() {
       const { data, error } = await supabase
         .from('alerts')
         .select('*')
-        .eq('status', 'new')
+        .eq('status', 'New')
         .order('created_at', { ascending: false })
       
       if (!error && data) {
@@ -52,8 +52,8 @@ export default function AlertsPage() {
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'alerts' },
         (payload) => {
-          // If status changed from 'new' to something else, remove it
-          if (payload.new.status !== 'new') {
+          // If status changed from 'New' to something else, remove it
+          if (payload.new.status !== 'New') {
             setAlerts((current) => current.filter((a) => a.id !== payload.new.id))
           } else {
             // Otherwise just update it
@@ -78,7 +78,7 @@ export default function AlertsPage() {
     await supabase
       .from('alerts')
       .update({ 
-        status: 'acknowledged', 
+        status: 'Acknowledged', 
         acknowledged_by: user?.id 
       })
       .eq('id', id)

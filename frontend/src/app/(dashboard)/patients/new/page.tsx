@@ -86,10 +86,10 @@ export default function NewPatientPage() {
       // 3. Insert Diagnoses History
       const diagnosesToInsert = []
       if (formData.historyHeartDisease) {
-        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Heart Disease', status: 'active', code: 'I51.9' })
+        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Heart Disease', diagnosed_at: now })
       }
       if (formData.historyStroke) {
-        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Stroke', status: 'active', code: 'I63.9' })
+        diagnosesToInsert.push({ patient_id: patient.id, condition: 'Stroke', diagnosed_at: now })
       }
       if (diagnosesToInsert.length > 0) {
         const { error: diagError } = await supabase.from('diagnoses').insert(diagnosesToInsert)

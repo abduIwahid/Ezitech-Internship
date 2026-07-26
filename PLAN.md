@@ -41,9 +41,9 @@ Following the 10-step agent sequence from the prompt guidelines, we execute in t
 2. **[x] Database Schema, RLS & Auth**: Write SQL migrations for all tables, set up RLS policies, and configure Supabase Auth.
 3. **[x] Synthetic Data & Feature Engineering**: Generate a realistic synthetic dataset and build the Python feature engineering pipeline.
 4. **[x] ML Training & Inference API**: Train models (Logistic Regression, XGBoost, LightGBM), track in MLflow, and build FastAPI endpoints with SHAP.
-5. **[ ] Supabase Edge Functions**: Implement orchestration layer (`predict-risk`, `ai-assistant-chat`, `send-alert`, etc.) and DB webhooks.
-6. **[ ] Core Frontend**: Build Auth flows, Dashboard, Patient List, and Patient Detail screens wired to Supabase.
-7. **[ ] Predictions UI & AI Assistant**: Implement SHAP waterfall charts, Realtime Alerts Center, and the conversational AI interface.
+5. **[x] Supabase Edge Functions**: Implement orchestration layer (`predict-risk`, `ai-assistant-chat`, `send-alert`, etc.) and DB webhooks.
+6. **[x] Core Frontend**: Build Auth flows (Login, Signup, Forgot/Reset Password, Onboarding), Dashboard, Patient List, and Patient Detail screens wired to Supabase.
+7. **[x] Predictions UI & AI Assistant**: Implement SHAP waterfall charts, Realtime Alerts Center, and the conversational AI interface.
 8. **[ ] Admin Panel & MLOps UI**: Build user management, model registry view, drift monitoring, and retraining triggers.
 9. **[ ] Testing, Hardening & CI/CD**: Write automated tests, accessibility pass, GitHub Actions pipeline, and deployment prep.
 
@@ -62,11 +62,16 @@ Mapped to the user's 6-8 week timeline:
   - Trained models (Logistic Regression baseline, Random Forest, XGBoost, LightGBM) with MLflow tracking.
   - Promoted LightGBM (AUC-ROC: 0.8307) and built the FastAPI prediction / SHAP engine.
   - Validated all modules via passing pytest suites.
-- **Weeks 3-4 (Edge Functions & Core UI - Pending):**
+- **Weeks 3-4 (Edge Functions & Core UI - Completed):**
   - Deno Edge Functions for proxying, alert routing, and reports.
   - Frontend patient registry views, doctor workflows, and dashboard pages.
-- **Weeks 5-6 (Interactive Features & Auditing - Pending):**
+  - Auth flows: Login, Signup, Forgot Password, Update Password, Onboarding.
+- **Weeks 5-6 (Interactive Features & Auditing - Completed):**
   - RAG-grounded AI Chat Assistant, Realtime alerts panel, and SHAP interactive charts.
-  - Admin governance, model registry views, and drift analytics.
-- **Weeks 7-8 (Testing, Hardening & Launch - Pending):**
+  - Live Recent Alerts widget on Dashboard, full alert acknowledgement flow.
+  - Forgot-password + update-password auth flows completed.
+- **Weeks 7-8 (Admin Panel, Analytics & MLOps UI - In Progress):**
+  - Admin Panel: user management, model registry view, drift monitoring charts, retraining trigger, audit log viewer.
+  - Population-level Analytics: disease distribution, department statistics, risk heatmaps.
+- **Weeks 9-10 (Testing, Hardening & Launch - Pending):**
   - End-to-end integration testing, WCAG 2.1 AA audits, CI/CD setup, and cloud deployment.
