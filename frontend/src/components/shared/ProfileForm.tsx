@@ -10,8 +10,8 @@ import { CheckCircle2, Mail, Shield, Building2, Phone, Stethoscope } from "lucid
 import { Badge } from "@/components/ui/badge"
 
 const ROLE_LABELS: Record<string, string> = {
-  super_admin: "Abdul Wahid",
-  hospital_admin: "Abdul Wahid",
+  super_admin: "Admin",
+  hospital_admin: "Hospital Admin",
   doctor: "Doctor",
   nurse: "Nurse",
   data_scientist: "Data Scientist",
