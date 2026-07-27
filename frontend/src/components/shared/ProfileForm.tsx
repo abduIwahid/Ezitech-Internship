@@ -159,8 +159,9 @@ export function ProfileForm({ user, profile, hospitals }: {
               type="tel"
               value={phone}
               onChange={e => setPhone(e.target.value)}
-              placeholder="+1 (555) 000-0000"
+              placeholder="+92 300 1234567"
             />
+            <p className="text-xs text-muted-foreground">Format example: +92 300 1234567</p>
           </div>
         </div>
       </div>
