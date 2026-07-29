@@ -1,21 +1,31 @@
 "use client"
 
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { ArrowLeft, MapPin, Phone, Mail, Stethoscope, CheckCircle2 } from "lucide-react"
+import { ArrowLeft, MapPin, Phone, Mail, CheckCircle2 } from "lucide-react"
 
 interface DoctorDetailViewProps {
   doctor: any
 }
 
 export function DoctorDetailView({ doctor }: DoctorDetailViewProps) {
+  const displayName = doctor.first_name && doctor.last_name
+    ? `${doctor.first_name} ${doctor.last_name}`
+    : (doctor.full_name || doctor.name || 'Doctor')
+  const status = doctor.availability_status || (doctor.available ? 'available' : 'busy')
+  const statusMap: Record<string, { label: string; className: string }> = {
+    available: { label: 'Accepting Patients', className: 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' },
+    busy:      { label: 'Currently Busy',     className: 'bg-amber-500/10 text-amber-700 border border-amber-500/20' },
+    on_leave:  { label: 'On Leave',           className: 'bg-slate-500/10 text-slate-600 border border-slate-500/20' },
+  }
+  const statusInfo = statusMap[status] || statusMap['busy']
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Dr. {doctor.full_name || doctor.name}</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{displayName}</h1>
           <p className="text-sm text-muted-foreground mt-1">{doctor.specialty} • {doctor.hospitals?.name || "Independent"}</p>
         </div>
         <Link href="/doctors">
@@ -32,13 +42,24 @@ export function DoctorDetailView({ doctor }: DoctorDetailViewProps) {
             <CardDescription>Contact details and availability.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="flex flex-col items-center gap-3 pb-4 border-b">
+              <img
+                src={doctor.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=1d4ed8&color=fff&size=128&rounded=true`}
+                alt={displayName}
+                className="h-24 w-24 rounded-full object-cover border-2 border-primary/20 shadow-md"
+              />
+              <div className="text-center">
+                <p className="font-semibold text-base">{displayName}</p>
+                <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
+              </div>
+            </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" /> {doctor.hospitals?.name || "Independent"}
               </div>
-              {doctor.phone && (
+              {(doctor.contact_number || doctor.phone) && (
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Phone className="h-4 w-4" /> {doctor.phone}
+                  <Phone className="h-4 w-4" /> {doctor.contact_number || doctor.phone}
                 </div>
               )}
               {doctor.email && (
@@ -49,13 +70,15 @@ export function DoctorDetailView({ doctor }: DoctorDetailViewProps) {
             </div>
             <div className="space-y-2">
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Status</span>
-              <Badge variant={doctor.available ? "secondary" : "outline"} className="text-sm">
-                {doctor.available ? "Accepting Patients" : "Not Accepting"}
-              </Badge>
+              <div>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${statusInfo.className}`}>
+                  {statusInfo.label}
+                </span>
+              </div>
             </div>
             <div className="space-y-2">
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Consultation Fee</span>
-              <div className="text-lg font-semibold">{doctor.consultation_fee ? `$${Number(doctor.consultation_fee).toFixed(0)}` : "TBD"}</div>
+              <div className="text-lg font-semibold">{doctor.consultation_fee ? `Rs. ${Number(doctor.consultation_fee).toLocaleString()}` : "TBD"}</div>
             </div>
           </CardContent>
         </Card>
@@ -63,7 +86,7 @@ export function DoctorDetailView({ doctor }: DoctorDetailViewProps) {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>About Dr. {doctor.full_name || doctor.name}</CardTitle>
+              <CardTitle>About {displayName}</CardTitle>
               <CardDescription>Specialty, services, and practice summary.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

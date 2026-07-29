@@ -15,11 +15,16 @@ export function MLOpsView({
   driftData,
   modelStatus,
   predictionTrend,
+  serviceConnected = false,
+  mlServiceUrl = 'http://localhost:8000',
 }: {
   driftData: any
   modelStatus: any
   predictionTrend: any[]
+  serviceConnected?: boolean
+  mlServiceUrl?: string
 }) {
+  const isDemo = modelStatus?._demo === true
   const [retraining, setRetraining] = useState(false)
   const [retrainMsg, setRetrainMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
@@ -60,20 +65,36 @@ export function MLOpsView({
     }
   }
 
-  const serviceOnline = !!modelStatus
-
   return (
     <div className="space-y-6">
+      {/* Not-Connected Banner */}
+      {!serviceConnected && (
+        <div className="flex flex-col sm:flex-row items-start gap-4 p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl text-sm">
+          <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-semibold text-amber-700 dark:text-amber-400">FastAPI ML Service Not Connected</p>
+            <p className="text-muted-foreground">
+              The prediction engine is not reachable at <code className="font-mono bg-muted px-1 rounded text-xs">{mlServiceUrl}</code>.
+              Prediction trend data below is loaded directly from the database.
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              To start the service: open a terminal in <code className="font-mono bg-muted px-1 rounded">ml-service/</code> and run{' '}
+              <code className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">uvicorn app.main:app --reload --port 8000</code>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Header cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-card border rounded-xl p-4 shadow-sm">
-          <p className="text-xs text-muted-foreground">Service</p>
+          <p className="text-xs text-muted-foreground">Service Status</p>
           <div className="flex items-center gap-2 mt-1">
-            {serviceOnline
+            {serviceConnected
               ? <CheckCircle2 className="h-4 w-4 text-green-500" />
-              : <AlertTriangle className="h-4 w-4 text-red-500" />
+              : <AlertTriangle className="h-4 w-4 text-amber-500" />
             }
-            <p className="font-semibold text-sm">{serviceOnline ? "Online" : "Offline"}</p>
+            <p className="font-semibold text-sm">{serviceConnected ? "Connected" : "Not Connected"}</p>
           </div>
         </div>
         <div className="bg-card border rounded-xl p-4 shadow-sm">
@@ -126,7 +147,7 @@ export function MLOpsView({
           </div>
           <Button
             onClick={handleRetrain}
-            disabled={retraining || !serviceOnline || modelStatus?.status === 'training'}
+            disabled={retraining || !serviceConnected || modelStatus?.status === 'training'}
             className="ml-4 flex-shrink-0"
           >
             {retraining ? (
@@ -145,9 +166,9 @@ export function MLOpsView({
             {retrainMsg.text}
           </div>
         )}
-        {!serviceOnline && (
+        {!serviceConnected && (
           <p className="mt-3 text-xs text-muted-foreground">
-            ⚠️ The FastAPI service is offline. Run <code className="font-mono bg-muted px-1 rounded">uvicorn app.main:app</code> in the <code className="font-mono bg-muted px-1 rounded">ml-service/</code> directory to enable retraining.
+            ⚠️ Start the FastAPI service to enable retraining: <code className="font-mono bg-muted px-1 rounded">uvicorn app.main:app --reload</code>
           </p>
         )}
       </div>

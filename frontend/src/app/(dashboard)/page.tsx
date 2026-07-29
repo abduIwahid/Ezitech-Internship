@@ -12,32 +12,30 @@ export default async function DashboardPage() {
     { cookies: { get(name: string) { return cookieStore.get(name)?.value } } }
   )
 
-  // Fetch recent high/critical risk patients
-  const { data: predictions } = await supabase
-    .from('predictions')
-    .select('*, patients(id, mrn, demographics)')
-    .in('severity', ['High', 'Critical'])
-    .order('created_at', { ascending: false })
-    .limit(10)
-
-  // Fetch recent new alerts
+  // Fetch recent new alerts (both High and Critical)
   const { data: recentAlerts } = await supabase
     .from('alerts')
     .select('*, patients(mrn)')
     .eq('status', 'New')
+    .in('severity', ['Critical', 'High'])
     .order('created_at', { ascending: false })
-    .limit(5)
+    .limit(8)
 
-  // Quick stats counts
+  // Quick stats
   const { count: totalPatients } = await supabase.from('patients').select('*', { count: 'exact', head: true })
   const { count: totalAlerts } = await supabase.from('alerts').select('*', { count: 'exact', head: true }).eq('status', 'New')
+  const { count: totalDoctors } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'doctor')
+  const { count: criticalAlerts } = await supabase.from('alerts').select('*', { count: 'exact', head: true }).eq('status', 'New').eq('severity', 'Critical')
+  const { count: totalPredictions } = await supabase.from('predictions').select('*', { count: 'exact', head: true })
 
   return (
     <DashboardClientView 
-      predictions={predictions || []}
       recentAlerts={recentAlerts || []}
       totalPatients={totalPatients || 0}
       totalAlerts={totalAlerts || 0}
+      totalDoctors={totalDoctors || 0}
+      criticalAlerts={criticalAlerts || 0}
+      totalPredictions={totalPredictions || 0}
     />
   )
 }
