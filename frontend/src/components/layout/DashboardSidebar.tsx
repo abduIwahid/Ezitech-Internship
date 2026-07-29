@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3, User, Stethoscope } from "lucide-react"
+import { LayoutDashboard, Users, Settings, LogOut, Bell, Bot, ShieldCheck, BarChart3, User, Stethoscope, Mail } from "lucide-react"
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect } from "react"
 
@@ -46,6 +46,8 @@ export function DashboardSidebar({ onClose, className }: DashboardSidebarProps) 
     { name: "Alerts Center", href: "/alerts", icon: Bell },
     { name: "AI Assistant", href: "/assistant", icon: Bot },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    { name: "About Us", href: "/about", icon: User },
+    { name: "Contact", href: "/contact", icon: Mail },
     ...(isAdmin ? [{ name: "Admin Console", href: "/admin", icon: ShieldCheck }] : []),
     { name: "Settings", href: "/settings", icon: Settings },
   ]

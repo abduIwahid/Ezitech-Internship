@@ -72,7 +72,7 @@ export function ProfileForm({ user, profile, hospitals }: {
           available,
           consultation_fee: consultationFee ? Number(consultationFee) : null,
           services: servicesString.split(',').map((item) => item.trim()).filter(Boolean),
-          hospital_id: hospitalId || null,
+          hospital_id: (hospitalId && hospitalId !== 'none') ? hospitalId : null,
           avatar_url: avatarUrl,
         })
         .eq("id", user.id)

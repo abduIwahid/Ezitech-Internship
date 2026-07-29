@@ -75,7 +75,15 @@ export default async function DoctorsPage() {
     name: doctor.full_name,
   }))
 
-  const doctorList = normalizedDoctors.length > 0 ? normalizedDoctors : sampleDoctors
+  // Show real doctors only; if none exist, display a friendly message
+  if (normalizedDoctors.length === 0) {
+    return (
+      <div className="rounded-xl border border-muted/20 bg-muted/10 p-6 text-muted-foreground">
+        <h2 className="font-bold">No doctors found</h2>
+        <p className="text-sm">The directory is currently empty. Please add doctor profiles.</p>
+      </div>
+    )
+  }
 
-  return <DoctorListView doctors={doctorList} />
+  return <DoctorListView doctors={normalizedDoctors} />
 }

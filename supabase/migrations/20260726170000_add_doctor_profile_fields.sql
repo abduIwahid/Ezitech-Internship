@@ -1,12 +1,15 @@
--- Add extended doctor profile fields and a read policy for doctor directory access
+-- Add extended doctor profile fields only if they don't already exist
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS specialty          text,
+  ADD COLUMN IF NOT EXISTS phone              text,
+  ADD COLUMN IF NOT EXISTS bio                text,
+  ADD COLUMN IF NOT EXISTS available          boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS consultation_fee  numeric,
+  ADD COLUMN IF NOT EXISTS services           jsonb NOT NULL DEFAULT '[]'::jsonb;
 
-alter table public.profiles
-  add column specialty text,
-  add column phone text,
-  add column bio text,
-  add column available boolean not null default true,
-  add column consultation_fee numeric,
-  add column services jsonb not null default '[]'::jsonb;
-
-create policy "Profiles: public doctor directory read access" on public.profiles
-  for select using (role = 'doctor');
+-- Re‑create the read‑only policy safely
+DROP POLICY IF EXISTS "Profiles: public doctor directory read access" ON public.profiles;
+CREATE POLICY "Profiles: public doctor directory read access"
+  ON public.profiles
+  FOR SELECT
+  USING (role = 'doctor');

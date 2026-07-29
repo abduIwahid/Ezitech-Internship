@@ -150,7 +150,7 @@ function generateLocalResponse(message: string, patientContext: string, modelSta
   if (q.includes("model") || q.includes("accuracy") || q.includes("performance")) {
     const metrics = modelStatus?.metrics
     if (metrics) {
-      return `🤖 **Model Performance**\n\n• **AUC-ROC:** ${(metrics.auc_roc * 100).toFixed(1)}%\n• **F1 Score:** ${(metrics.f1 * 100).toFixed(1)}%\n• **Accuracy:** ${(metrics.accuracy * 100).toFixed(1)}%\n• **Model:** ${modelStatus.model_name || "LightGBM"}\n• **Version:** ${modelStatus.version || "1.0.0"}\n\nTrained on the CDC BRFSS 2015 Diabetes Health Indicators dataset (253,680 survey responses).`
+      return `🤖 **Model Performance**\n\n• **AUC-ROC:** ${(metrics.auc_roc * 100).toFixed(1)}%\n• **F1 Score:** ${(metrics.f1_score * 100).toFixed(1)}%\n• **Accuracy:** ${(metrics.accuracy * 100).toFixed(1)}%\n• **Model:** ${modelStatus.model_name || "LightGBM"}\n• **Version:** ${modelStatus.version || "1.0.0"}\n\nTrained on the CDC BRFSS 2015 Diabetes Health Indicators dataset (253,680 survey responses).`
     }
     return `🤖 **Model Performance**\n\nThe MediSight ML engine (LightGBM) achieves AUC-ROC > 0.83 on the held-out test set.\nThe FastAPI inference service is running at ${API_URL}.\n\nVisit ${API_URL}/docs to explore all available API endpoints.`
   }

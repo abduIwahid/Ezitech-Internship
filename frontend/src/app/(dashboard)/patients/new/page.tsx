@@ -51,6 +51,18 @@ export default function NewPatientPage() {
         .eq("id", user.id)
         .single()
 
+      // Resolve hospital_id — fallback to first available hospital if doctor has none set
+      let resolvedHospitalId = profile?.hospital_id || null
+      if (!resolvedHospitalId) {
+        const { data: firstHospital } = await supabase
+          .from("hospitals")
+          .select("id")
+          .limit(1)
+          .single()
+        resolvedHospitalId = firstHospital?.id || null
+      }
+      if (!resolvedHospitalId) throw new Error("No hospital found. Please create a hospital first.")
+
       // 1. Insert Patient
       const mrn = `MRN-${Math.floor(Math.random() * 900000) + 100000}`
       const { data: patient, error: patientError } = await supabase
@@ -66,7 +78,7 @@ export default function NewPatientPage() {
               new Date().setFullYear(new Date().getFullYear() - parseInt(formData.age))
             ).toISOString(),
           },
-          hospital_id: profile?.hospital_id || null,
+          hospital_id: resolvedHospitalId,
         })
         .select()
         .single()
@@ -97,10 +109,11 @@ export default function NewPatientPage() {
 
       // 4. Insert Diagnoses History
       const diagnosesToInsert = []
+      const today = new Date().toISOString().slice(0, 10) // YYYY-MM-DD date only
       if (formData.historyHeartDisease)
-        diagnosesToInsert.push({ patient_id: patient.id, condition: "Heart Disease", diagnosed_at: now })
+        diagnosesToInsert.push({ patient_id: patient.id, condition: "Heart Disease", diagnosed_at: today })
       if (formData.historyStroke)
-        diagnosesToInsert.push({ patient_id: patient.id, condition: "Stroke", diagnosed_at: now })
+        diagnosesToInsert.push({ patient_id: patient.id, condition: "Stroke", diagnosed_at: today })
       if (diagnosesToInsert.length > 0)
         await supabase.from("diagnoses").insert(diagnosesToInsert)
 
