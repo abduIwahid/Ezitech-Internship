@@ -44,8 +44,6 @@ export default function DashboardLayout({
     const readyQuery = searchQuery.trim()
     if (readyQuery) {
       router.push(`/patients?search=${encodeURIComponent(readyQuery)}`)
-    } else {
-      router.push("/patients")
     }
   }
 
