@@ -1,0 +1,35 @@
+{
+    "model_name": "LightGBM",
+    "features": [
+        "HighBP",
+        "HighChol",
+        "CholCheck",
+        "BMI",
+        "Smoker",
+        "Stroke",
+        "HeartDiseaseorAttack",
+        "PhysActivity",
+        "Fruits",
+        "Veggies",
+        "HvyAlcoholConsump",
+        "AnyHealthcare",
+        "NoDocbcCost",
+        "GenHlth",
+        "MentHlth",
+        "PhysHlth",
+        "DiffWalk",
+        "Sex",
+        "Age",
+        "Education",
+        "Income"
+    ],
+    "metrics": {
+        "accuracy": 0.7528820991583564,
+        "precision": 0.7308536742864523,
+        "recall": 0.8005375583533739,
+        "f1_score": 0.7641101809343775,
+        "auc_roc": 0.8307103169545376
+    },
+    "last_trained": "2026-07-24T11:33:57.898128",
+    "version": "1.0.0"
+}
