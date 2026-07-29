@@ -6,8 +6,9 @@ import { createBrowserClient } from "@supabase/ssr"
 import { DataTable } from "@/components/shared/DataTable"
 import { RiskBadge } from "@/components/shared/RiskBadge"
 import Link from "next/link"
-import { Plus, Search, Users, Trash2, Pencil } from "lucide-react"
+import { Plus, Search, Users, Trash2, Pencil, UserSearch } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { motion, AnimatePresence } from "framer-motion"
 
 // Format vital/lab type names from snake_case to Title Case
 function formatName(str: string): string {
@@ -202,46 +203,89 @@ export function PatientListView({ patients, initialSearch = "", isAdmin = false 
     }
   ]
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  }
+
   return (
-    <div className="space-y-5">
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="space-y-6 max-w-7xl mx-auto pb-8"
+    >
       {deleteError && (
-        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
-          {deleteError}
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive shadow-sm flex items-center gap-3"
+        >
+          <Trash2 className="h-4 w-4 flex-shrink-0" />
+          <p>{deleteError}</p>
+        </motion.div>
       )}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+      <motion.div variants={itemVariants} className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Patients Panel</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">
-            Showing {filtered.length} of {normalizedPatients.length} most recent records.
+          <h1 className="text-3xl font-extrabold tracking-tight">Patient Registry</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground/80">
+            Monitoring <span className="font-semibold text-foreground">{filtered.length}</span> of {normalizedPatients.length} recent patient records.
           </p>
         </div>
-        <Link href="/patients/new" prefetch={true} className="uiverse-btn flex-shrink-0">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Patient & Predict
-        </Link>
-      </div>
-
-      <div className="relative max-w-sm">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search by name or MRN..."
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          className="pl-9"
-        />
-      </div>
-
-      <div className="overflow-hidden rounded-xl border bg-card shadow-sm uiverse-card">
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-            <Users className="mb-3 h-10 w-10 opacity-30" />
-            <p className="text-sm">No patients match your search.</p>
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div className="relative group">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+            <Input
+              placeholder="Search by name or MRN..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              className="pl-9 h-11 w-full sm:w-64 rounded-xl border-border/50 bg-card shadow-sm transition-all focus:bg-background focus-visible:ring-1 focus-visible:ring-primary"
+            />
           </div>
-        ) : (
-          <DataTable columns={columns} data={filtered} />
-        )}
-      </div>
-    </div>
+          <Link href="/patients/new" prefetch={true} className="uiverse-btn h-11 px-6 whitespace-nowrap">
+            <Plus className="mr-2 h-4 w-4" />
+            New Assessment
+          </Link>
+        </div>
+      </motion.div>
+
+      <motion.div variants={itemVariants} className="overflow-hidden rounded-2xl border bg-card shadow-sm hover:shadow-md transition-shadow duration-300">
+        <AnimatePresence mode="wait">
+          {filtered.length === 0 ? (
+            <motion.div 
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-24 text-muted-foreground bg-muted/10"
+            >
+              <div className="p-4 rounded-full bg-background border border-dashed mb-4">
+                <UserSearch className="h-8 w-8 opacity-40 text-primary" />
+              </div>
+              <p className="text-base font-semibold text-foreground">No patients found</p>
+              <p className="text-xs mt-1 max-w-[250px] text-center">Try adjusting your search query or add a new patient assessment.</p>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="table"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="overflow-x-auto custom-scrollbar"
+            >
+              <div className="min-w-[800px]">
+                <DataTable columns={columns} data={filtered} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   )
 }

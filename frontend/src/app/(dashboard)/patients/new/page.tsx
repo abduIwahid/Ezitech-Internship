@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, ArrowLeft } from "lucide-react"
+import { Loader2, ArrowLeft, HeartPulse, Stethoscope, TestTube2, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 
 export default function NewPatientPage() {
   const router = useRouter()
@@ -192,268 +193,348 @@ export default function NewPatientPage() {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  }
+
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
-          <Link href="/patients">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-        </Button>
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="mx-auto max-w-4xl space-y-6 pb-12"
+    >
+      <motion.div variants={itemVariants} className="flex items-center gap-5">
+        <Link href="/patients">
+          <button type="button" className="h-10 w-10 rounded-full border border-border/50 bg-muted/30 flex items-center justify-center hover:bg-muted hover:scale-105 transition-all shadow-sm">
+            <ArrowLeft className="h-4 w-4 text-muted-foreground" />
+          </button>
+        </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Add New Patient & Run Inference</h1>
-          <p className="text-muted-foreground">Input clinical data to immediately trigger the predictive risk model.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">New Patient Assessment</h1>
+          <p className="text-muted-foreground mt-1">Input clinical data to immediately trigger the predictive AI model.</p>
         </div>
-      </div>
+      </motion.div>
 
-      <Card>
-        <form onSubmit={handleSubmit}>
-          <CardHeader>
-            <CardTitle>Clinical Profile</CardTitle>
-            <CardDescription>All fields will be processed by the ML engine in real-time.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {error && (
-              <div className="p-4 bg-destructive/10 text-destructive rounded-lg border border-destructive/20 text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Patient Identity */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  required
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  required
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="age">Age</Label>
-                <Input
-                  id="age"
-                  type="number"
-                  required
-                  min="1"
-                  max="120"
-                  value={formData.age}
-                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Gender</Label>
-                <Select
-                  required
-                  value={formData.gender}
-                  onValueChange={(val) => setFormData({ ...formData, gender: val })}
+      <motion.div variants={itemVariants}>
+        <Card className="rounded-2xl shadow-sm border overflow-hidden">
+          <form onSubmit={handleSubmit}>
+            <CardHeader className="bg-muted/10 border-b pb-6">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Stethoscope className="h-5 w-5 text-primary" /> Clinical Profile Registration
+              </CardTitle>
+              <CardDescription>
+                All fields will be processed by the LightGBM engine in real-time.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-8 pt-8">
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  className="p-4 bg-destructive/10 text-destructive rounded-xl border border-destructive/20 text-sm font-medium flex items-start gap-3"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Clinical Measurements */}
-            <div className="pt-4 border-t border-border/50">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Clinical Measurements</p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="bmi">BMI</Label>
-                  <Input
-                    id="bmi"
-                    type="number"
-                    step="0.1"
-                    placeholder="e.g. 25.5"
-                    required
-                    value={formData.bmi}
-                    onChange={(e) => setFormData({ ...formData, bmi: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bpSystolic">Systolic Blood Pressure (mmHg)</Label>
-                  <Input
-                    id="bpSystolic"
-                    type="number"
-                    placeholder="e.g. 120"
-                    required
-                    value={formData.bpSystolic}
-                    onChange={(e) => setFormData({ ...formData, bpSystolic: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="genHlth">General Health (1=Excellent → 5=Poor)</Label>
-                  <Select
-                    value={formData.genHlth}
-                    onValueChange={(val) => setFormData({ ...formData, genHlth: val })}
-                  >
-                    <SelectTrigger id="genHlth">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 — Excellent</SelectItem>
-                      <SelectItem value="2">2 — Very Good</SelectItem>
-                      <SelectItem value="3">3 — Good</SelectItem>
-                      <SelectItem value="4">4 — Fair</SelectItem>
-                      <SelectItem value="5">5 — Poor</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-
-            {/* Lab Results */}
-            <div className="pt-4 border-t border-border/50 space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Lab Results</p>
-                <button
-                  type="button"
-                  onClick={() => setFormData({
-                    ...formData,
-                    labs: [
-                      ...formData.labs,
-                      { testName: "", value: "", unit: "", recordedAt: new Date().toISOString().slice(0, 10) }
-                    ]
-                  })}
-                  className="text-sm text-primary hover:underline"
-                >
-                  + Add lab
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                {formData.labs.map((lab, index) => (
-                  <div key={index} className="grid gap-4 sm:grid-cols-4 items-end">
-                    <div className="space-y-2 sm:col-span-2">
-                      <Label htmlFor={`lab-${index}-name`}>Test Name</Label>
-                      <Input
-                        id={`lab-${index}-name`}
-                        value={lab.testName}
-                        onChange={(e) => {
-                          const labs = [...formData.labs]
-                          labs[index].testName = e.target.value
-                          setFormData({ ...formData, labs })
-                        }}
-                        placeholder="e.g. HbA1c"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`lab-${index}-value`}>Value</Label>
-                      <Input
-                        id={`lab-${index}-value`}
-                        value={lab.value}
-                        onChange={(e) => {
-                          const labs = [...formData.labs]
-                          labs[index].value = e.target.value
-                          setFormData({ ...formData, labs })
-                        }}
-                        placeholder="e.g. 6.8"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`lab-${index}-unit`}>Unit</Label>
-                      <Input
-                        id={`lab-${index}-unit`}
-                        value={lab.unit}
-                        onChange={(e) => {
-                          const labs = [...formData.labs]
-                          labs[index].unit = e.target.value
-                          setFormData({ ...formData, labs })
-                        }}
-                        placeholder="e.g. %"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`lab-${index}-date`}>Date</Label>
-                      <Input
-                        id={`lab-${index}-date`}
-                        type="date"
-                        value={lab.recordedAt}
-                        onChange={(e) => {
-                          const labs = [...formData.labs]
-                          labs[index].recordedAt = e.target.value
-                          setFormData({ ...formData, labs })
-                        }}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const labs = [...formData.labs]
-                        labs.splice(index, 1)
-                        setFormData({ ...formData, labs })
-                      }}
-                      className="text-sm text-destructive hover:underline self-start pt-7"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Medical History */}
-            <div className="pt-4 border-t border-border/50 space-y-3">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Medical History & Lifestyle</p>
-              {[
-                { key: "historyHeartDisease", label: "Prior Heart Disease or Attack" },
-                { key: "historyStroke", label: "Prior Stroke" },
-                { key: "highChol", label: "High Cholesterol" },
-                { key: "smoker", label: "Smoker (≥100 cigarettes in lifetime)" },
-                { key: "physActivity", label: "Physically Active (past 30 days)" },
-              ].map(({ key, label }) => (
-                <div key={key} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id={key}
-                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                    checked={formData[key as keyof typeof formData] as boolean}
-                    onChange={(e) => setFormData({ ...formData, [key]: e.target.checked })}
-                  />
-                  <label htmlFor={key} className="text-sm font-medium leading-none">
-                    {label}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="border-t bg-muted/20 p-6">
-            <button
-              type="submit"
-              className="w-full h-12 uiverse-btn flex items-center justify-center text-base"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Generating AI Prediction...
-                </>
-              ) : (
-                "Save Patient & Run AI Prediction"
+                  <Loader2 className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <p>{error}</p>
+                </motion.div>
               )}
-            </button>
-          </CardFooter>
-        </form>
-      </Card>
-    </div>
+
+              {/* Patient Identity */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 border-b pb-2">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">1</span>
+                  </div>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-primary">Patient Demographics</h3>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName" className="font-semibold">First Name</Label>
+                    <Input
+                      id="firstName"
+                      className="h-11 rounded-xl transition-all focus:ring-2 focus:ring-primary/20"
+                      required
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName" className="font-semibold">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      className="h-11 rounded-xl transition-all focus:ring-2 focus:ring-primary/20"
+                      required
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="age" className="font-semibold">Age</Label>
+                    <Input
+                      id="age"
+                      type="number"
+                      className="h-11 rounded-xl transition-all focus:ring-2 focus:ring-primary/20"
+                      required
+                      min="1"
+                      max="120"
+                      value={formData.age}
+                      onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-semibold">Gender</Label>
+                    <Select
+                      required
+                      value={formData.gender}
+                      onValueChange={(val) => setFormData({ ...formData, gender: val })}
+                    >
+                      <SelectTrigger className="h-11 rounded-xl transition-all focus:ring-2 focus:ring-primary/20">
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Clinical Measurements */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 border-b pb-2">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">2</span>
+                  </div>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <HeartPulse className="h-4 w-4" /> Vitals & Health
+                  </h3>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="bmi" className="font-semibold">BMI</Label>
+                    <Input
+                      id="bmi"
+                      type="number"
+                      step="0.1"
+                      className="h-11 rounded-xl"
+                      placeholder="e.g. 25.5"
+                      required
+                      value={formData.bmi}
+                      onChange={(e) => setFormData({ ...formData, bmi: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bpSystolic" className="font-semibold">Systolic Blood Pressure</Label>
+                    <div className="relative">
+                      <Input
+                        id="bpSystolic"
+                        type="number"
+                        className="h-11 rounded-xl pr-12"
+                        placeholder="e.g. 120"
+                        required
+                        value={formData.bpSystolic}
+                        onChange={(e) => setFormData({ ...formData, bpSystolic: e.target.value })}
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">mmHg</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="genHlth" className="font-semibold">General Health</Label>
+                    <Select
+                      value={formData.genHlth}
+                      onValueChange={(val) => setFormData({ ...formData, genHlth: val })}
+                    >
+                      <SelectTrigger id="genHlth" className="h-11 rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1 — Excellent</SelectItem>
+                        <SelectItem value="2">2 — Very Good</SelectItem>
+                        <SelectItem value="3">3 — Good</SelectItem>
+                        <SelectItem value="4">4 — Fair</SelectItem>
+                        <SelectItem value="5">5 — Poor</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Lab Results */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-xs font-bold text-primary">3</span>
+                    </div>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                      <TestTube2 className="h-4 w-4" /> Laboratory Results
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({
+                      ...formData,
+                      labs: [
+                        ...formData.labs,
+                        { testName: "", value: "", unit: "", recordedAt: new Date().toISOString().slice(0, 10) }
+                      ]
+                    })}
+                    className="text-xs font-bold text-primary hover:underline bg-primary/10 px-3 py-1.5 rounded-full transition-colors hover:bg-primary/20"
+                  >
+                    + Add Test
+                  </button>
+                </div>
+
+                <div className="space-y-4 bg-muted/20 p-4 rounded-xl border border-dashed">
+                  {formData.labs.length === 0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">No lab tests added yet.</p>
+                  )}
+                  {formData.labs.map((lab, index) => (
+                    <motion.div 
+                      key={index} 
+                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                      className="grid gap-4 sm:grid-cols-12 items-end bg-card p-3 rounded-xl border shadow-sm"
+                    >
+                      <div className="space-y-2 sm:col-span-4">
+                        <Label htmlFor={`lab-${index}-name`} className="text-xs">Test Name</Label>
+                        <Input
+                          id={`lab-${index}-name`}
+                          className="h-10 rounded-lg"
+                          value={lab.testName}
+                          onChange={(e) => {
+                            const labs = [...formData.labs]
+                            labs[index].testName = e.target.value
+                            setFormData({ ...formData, labs })
+                          }}
+                          placeholder="e.g. HbA1c"
+                        />
+                      </div>
+                      <div className="space-y-2 sm:col-span-3">
+                        <Label htmlFor={`lab-${index}-value`} className="text-xs">Value</Label>
+                        <Input
+                          id={`lab-${index}-value`}
+                          className="h-10 rounded-lg"
+                          value={lab.value}
+                          onChange={(e) => {
+                            const labs = [...formData.labs]
+                            labs[index].value = e.target.value
+                            setFormData({ ...formData, labs })
+                          }}
+                          placeholder="e.g. 6.8"
+                        />
+                      </div>
+                      <div className="space-y-2 sm:col-span-2">
+                        <Label htmlFor={`lab-${index}-unit`} className="text-xs">Unit</Label>
+                        <Input
+                          id={`lab-${index}-unit`}
+                          className="h-10 rounded-lg"
+                          value={lab.unit}
+                          onChange={(e) => {
+                            const labs = [...formData.labs]
+                            labs[index].unit = e.target.value
+                            setFormData({ ...formData, labs })
+                          }}
+                          placeholder="e.g. %"
+                        />
+                      </div>
+                      <div className="space-y-2 sm:col-span-3 flex items-center justify-between">
+                        <div className="w-full">
+                          <Label htmlFor={`lab-${index}-date`} className="text-xs">Date</Label>
+                          <Input
+                            id={`lab-${index}-date`}
+                            type="date"
+                            className="h-10 rounded-lg"
+                            value={lab.recordedAt}
+                            onChange={(e) => {
+                              const labs = [...formData.labs]
+                              labs[index].recordedAt = e.target.value
+                              setFormData({ ...formData, labs })
+                            }}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const labs = [...formData.labs]
+                            labs.splice(index, 1)
+                            setFormData({ ...formData, labs })
+                          }}
+                          className="text-xs font-semibold text-destructive hover:bg-destructive/10 p-2 rounded-lg ml-2 mt-6 transition-colors"
+                          title="Remove Lab"
+                        >
+                          X
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Medical History */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 border-b pb-2">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">4</span>
+                  </div>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4" /> Medical History & Lifestyle
+                  </h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8 bg-muted/10 p-5 rounded-xl border border-dashed">
+                  {[
+                    { key: "historyHeartDisease", label: "Prior Heart Disease or Attack" },
+                    { key: "historyStroke", label: "Prior Stroke" },
+                    { key: "highChol", label: "High Cholesterol" },
+                    { key: "smoker", label: "Smoker (≥100 cigarettes in lifetime)" },
+                    { key: "physActivity", label: "Physically Active (past 30 days)" },
+                  ].map(({ key, label }) => (
+                    <div key={key} className="flex items-center space-x-3 group">
+                      <div className="relative flex items-start">
+                        <input
+                          type="checkbox"
+                          id={key}
+                          className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary/50 transition-all cursor-pointer"
+                          checked={formData[key as keyof typeof formData] as boolean}
+                          onChange={(e) => setFormData({ ...formData, [key]: e.target.checked })}
+                        />
+                      </div>
+                      <label htmlFor={key} className="text-sm font-medium leading-none cursor-pointer group-hover:text-primary transition-colors">
+                        {label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="border-t bg-muted/20 p-6 sm:px-8">
+              <button
+                type="submit"
+                className="w-full h-14 uiverse-btn flex items-center justify-center text-base rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                    Generating AI Prediction...
+                  </>
+                ) : (
+                  "Save Patient & Run AI Prediction"
+                )}
+              </button>
+            </CardFooter>
+          </form>
+        </Card>
+      </motion.div>
+    </motion.div>
   )
 }
