@@ -1,7 +1,7 @@
 "use client"
 import { useState, type FormEvent } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackError = searchParams.get("error")
 
   const supabase = createClient()
 
@@ -123,6 +125,7 @@ export default function LoginPage() {
                 <span className="text-sm text-slate-500">Secure session</span>
               </div>
 
+              {callbackError && <div className="rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-700">⚠️ {callbackError}</div>}
               {error && <div className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
 
               <Button type="submit" className="w-full rounded-2xl py-3" disabled={loading}>
