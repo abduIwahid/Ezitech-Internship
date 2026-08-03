@@ -221,31 +221,59 @@ export function AIChatPanel({ patientId }: AIChatPanelProps) {
     if (!text.trim()) return
 
     const userMessage: Message = { id: Date.now().toString(), role: "user", content: text }
-    setMessages((prev) => [...prev, userMessage])
+    const updatedMessages = [...messages, userMessage]
+    setMessages(updatedMessages)
     setInput("")
     setIsLoading(true)
 
     try {
-      const [patientData, modelStatusRes] = await Promise.all([
-        patientId ? fetchPatientContext(patientId, supabase) : Promise.resolve(null),
-        fetch(`${API_URL}/model-status`).then(r => r.json()).catch(() => null)
-      ])
+      // 1. Attempt to invoke the Supabase Edge Function for real AI chat (passing history for multi-turn)
+      const { data, error } = await supabase.functions.invoke("ai-assistant-chat", {
+        body: {
+          patient_id: patientId || null,
+          message: text,
+          history: messages.map((m) => ({ role: m.role, content: m.content }))
+        }
+      })
 
-      const patientContext = buildPatientSummary(patientData)
-      const reply = generateLocalResponse(text, patientContext, modelStatusRes)
+      if (error) throw error
+      if (!data || !data.reply) {
+        throw new Error("Invalid response format from Edge Function")
+      }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: reply
+        content: data.reply
       }
       setMessages((prev) => [...prev, assistantMessage])
-    } catch (error: any) {
-      setMessages((prev) => [...prev, {
-        id: Date.now().toString(),
-        role: "assistant",
-        content: `⚠️ Error generating response: ${error?.message || "Unknown error"}. Please try again.`
-      }])
+
+    } catch (edgeError: any) {
+      console.warn("AI Assistant Edge Function error, falling back to local rule-based response:", edgeError)
+      
+      // Fallback: If edge function fails (e.g. offline, local dev without supabase running, no API key), use local responder
+      try {
+        const [patientData, modelStatusRes] = await Promise.all([
+          patientId ? fetchPatientContext(patientId, supabase) : Promise.resolve(null),
+          fetch(`${API_URL}/model-status`).then(r => r.json()).catch(() => null)
+        ])
+
+        const patientContext = buildPatientSummary(patientData)
+        const reply = generateLocalResponse(text, patientContext, modelStatusRes)
+
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: reply
+        }
+        setMessages((prev) => [...prev, assistantMessage])
+      } catch (fallbackError: any) {
+        setMessages((prev) => [...prev, {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: `⚠️ Error generating response: ${fallbackError?.message || "Unknown error"}. Please check your connection.`
+        }])
+      }
     } finally {
       setIsLoading(false)
     }

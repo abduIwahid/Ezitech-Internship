@@ -1,0 +1,1147 @@
+ 
+ 
+ 
+ 
+ 
+INTERNSHIP 
+HANDBOOK  Department of 
+Computer Science   
+ 
+ Table of Contents  
+1. Introduction  ................................ ................................ ................................ .........................  1 
+2. Overview of the Internship Program ................................ ................................ ...................  1 
+3. Objectives of the Internship Program  ................................ ................................ .................  2 
+4. Eligibility Criteria  ................................ ................................ ................................ ...............  2 
+5. Internship Duration and Nature  ................................ ................................ ..........................  3 
+6. Internship Office Responsibilities  ................................ ................................ .......................  4 
+7. Suitable Host Organizations  ................................ ................................ ...............................  5 
+8. Internship Report Submission  ................................ ................................ .............................  7 
+9. Supervisory Framework  ................................ ................................ ................................ ...... 8 
+10. Student Responsibilities  ................................ ................................ ................................ ...... 8 
+11. Internship Process and Timeline  ................................ ................................ .........................  8 
+12. Evaluation and Assessment  ................................ ................................ ................................ . 9 
+13. Complaints and Grievances  ................................ ................................ ..............................  10 
+Reports Required  ................................ ................................ ................................ ..........................  12 
+Annexture A  ................................ ................................ ................................ ................................ .. 14 
+Annexture B  ................................ ................................ ................................ ................................ .. 16 
+Annexture C  ................................ ................................ ................................ ................................ .. 18 
+Annexture D.1  ................................ ................................ ................................ ...............................  21 
+Annexture D.2  ................................ ................................ ................................ ...............................  27 
+Annexture E  ................................ ................................ ................................ ................................ .. 34 
+Annexture F  ................................ ................................ ................................ ................................ .. 36 
+Annexture G  ................................ ................................ ................................ ................................ .. 38 
+Annexture H  ................................ ................................ ................................ ................................ .. 40 
+Annexture I  ................................ ................................ ................................ ................................ ... 42 
+Annexture J  ................................ ................................ ................................ ................................ ... 44 
+  
+1  1. Introductio n  
+The Department of Computer Science stands as a catalyst for innovation, technical excellence, and 
+academic growth in the ever -evolving digital age. With a strong focus on quality education and industry 
+relevance, the department is dedicated to shaping grad uates who are not only technically proficient but 
+also capable of contributing meaningfully to the scientific and economic progress of the nation.  Our 
+academic framework blends creative learning environments with forward -thinking curricula, empowering 
+students to become agile problem -solvers and innovators. The department actively fosters a culture of 
+research, industrial collaboration, and continuous learning —ensuring our graduates remain competitive 
+and future -ready in a globalized technology landscape.  
+Internships serve as a critical bridge between classroom theory and industry practice. In keeping with our 
+commitment to excellence, the internship program provides students with the opportunity to gain real -
+world experience, apply their learning in practi cal settings, and engage with professionals in the field. 
+This structured exposure not only enhances technical capabilities but also instills the confidence and 
+adaptability required in modern workplaces.  By aligning education with industry expectations and national 
+development goals, the Department of Computer Science strives to produce graduates who are leaders in 
+innovation, contributors to the knowledge economy, and lifelong learners in the computing do main.  
+2. Overview  of the Internship Program  
+The Internship Program is a structured academic component of the undergraduate curriculum prescribed 
+by Comsats  University  Islamabad . It is a compulsory, credit -bearing course designed to integrate academic 
+learning with practical industry experience. Undertaken typically after the fourth  semester of  the degree 
+program, the internship allows students to apply their classroom knowledge in real -world environments, 
+preparing them for the professional demands of the computing industry.  Through this experience, students 
+gain insight into workplace dynamics, the direction in which technology is evolving, and the ethical 
+standards expected in professional settings. Internships enable students to develop both technical 
+competencies and essen tial soft skills, including teamwork, communication, time management, and 
+workplace ethics. It serves as a transformative journey —helping students transition from learners to 
+professionals.  
+The internship completion requires  the student to work a minimum  of 6-8 continuous weeks , amounting 
+to a total of 3 credit hours. Students are placed in organizations relevant to their field of study and interest, 
+where they are expected to undertake tasks such as software or web development projects. These projects 
+should be finalized in coordination with both an indu stry Mentor/Supervisor and a Departmental Faculty 
+Supervisor .  Each intern is jointly supervised by:  An external Professional Supervisor from the host 
+organization, and an assigned Faculty Supervisor  from the Department.  
+During the internship period, the student is expected to adhere to the organization's work culture, follow 
+its policies and professional code of conduct, and observe regular working hours, as applicable to full -
+time staff.  
+It is important for each intern to understand that they represent not only themselves but also the 
+Department of Computer Science and the University. Professional conduct, attitude, and commitment will  
+2  reflect directly on the University’s reputation and may impact future internship opportunities for other 
+students. When planned and executed well, this internship fosters academic, career, and personal 
+development, equipping students with the skills and co nfidence necessary for a successful transition into 
+professional life.  
+3. Objectives of the Internship  Program   
+The objectives of the Internship Program are aligned with the department’s commitment to producing 
+industry -ready graduates equipped with both technical expertise and professional competencies. This 
+program serves as a bridge between academic preparation a nd workplace expectations, offering students 
+the opportunity to apply their classroom learning in real -world scenarios. It also supports the holistic 
+development of students by enhancing their ability to function effectively in dynamic and collaborative 
+environments.  
+Specifically, the Internship Program aims to:  
+❖ Bridge the gap between academic theory and real -world computing practices.  
+❖ Provide hands -on experience in a student’s area of specialization, such as software development,  cyber 
+security & networking, artificial intelligence, or data science.  
+❖ Develop essential workplace competencies, including communication, teamwork, problem -solving, 
+adaptability, and time management.  
+❖ Facilitate career exploration and help students identify potential career paths while building industry 
+networks and professional relationships.  
+❖ Instill professional ethics and responsibility, fostering a mindset of lifelong learning and continuous 
+professional development.  
+4. Eligibility Criteria  
+Participation in the Internship Program is subject to specific academic and administrative requirements to 
+ensure that students are adequately prepared to undertake professional responsibilities in a real -world 
+setting. These criteria are established to ma intain the integrity and effectiveness of the internship 
+experience, ensuring that students possess the foundational knowledge, maturity, and commitment 
+necessary for a successful placement.  
+To be eligible for the internship program, students must:  
+❖ Have successfully completed at least four semesters of their degree program.  
+❖ Maintain a minimum Cumulative Grade Point Average (CGPA) of 2.0.  
+❖ Not be enrolled in any other courses during the internship period, if the internship is undertaken during 
+the summer semester.   
+3  5. Internship Duration and Nature  
+Minimum Duration  
+❖ 6–8 continuous weeks  
+Preferred Timing  
+Internship During Regular Semester  (During Fall/Spring Semester)  
+❖ Internship registration coincides with semester registration, ensuring that total credit hours , 
+including internship credits, do not exceed the maximum permissible limit per semester.  
+❖ Internship registration occurs in the subsequent semester . 
+❖ Internship timing does not conflict with scheduled courses/ class timings.  
+❖ Internship duration includes weekends and holidays . 
+Internship During Summer Break  
+❖ Registration occurs in the subsequent  Fall semester, with internship credits not counted toward 
+the maximum credit hours per semester.  
+❖ Internship dates do not conflict with final exams or the start of the new semester.  
+❖ Internship duration includes weekends and holidays.  
+Nature of Internship  
+Internships may be completed in on -site, virtual, or freelancing (Fiverr/Upwork) formats where 
+appropriate. The mode of internship should be aligned with the host organization’s policies and the 
+student’s circumstances. However, it is essential that the ch osen mode is finalized and formally approved 
+prior to the start of the internship.  
+On-site Internship  
+This is a traditional, location -based internship where the student is required to be physically present at the 
+premises of the host organization.  
+Virtual Internship  
+In a virtual internship, students work remotely and are not required to be physically present at the 
+organization’s office. These internships are coordinated through digital platforms, allowing flexibility 
+while maintaining professional engagement.  
+Freelancing -Based Internship (Fiverr/Upwork)  
+Students may complete their internships through freelancing platforms such as Fiverr or Upwork.  
+The nature and scope of the internship must reflect professional relevance and meet the required standards 
+of learning outcomes, supervision, and reporting as set by the Internship Office.   
+4  6. Internship Office Responsibilities  
+The Internship Office plays a central role in bridging students with industry opportunities, ensuring quality 
+assurance, and facilitating smooth internship execution. It supports students in securing meaningful 
+placements, oversees internship compliance, a nd maintains coordination between students, faculty, and 
+host organizations. To this end, the office is responsible for a range of academic, administrative, and 
+technical tasks, as outlined below:  
+The Internship Office shall:  
+❖ Identify potential host organizations and establish formal collaborations through Memoranda of 
+Understanding (MoUs).  
+❖ Arrange internship placements for students based on availability and suitability.  
+❖ Maintain a complete database of all student internship records, including placement status, 
+evaluations, and reports.  
+❖ Assign supervisory roles:  
+➢ A faculty supervisor from the department to oversee academic progress.  
+➢ A site/host supervisor from the organization to oversee on -ground performance.  
+❖ Organize on -campus internship expos and employer meetups in collaboration with the Industry 
+Liaison Cell.  
+❖ Process and respond to all feedback and complaints, whether received from students, faculty 
+supervisors, or host supervisors.  
+❖ Support technical infrastructure for professional project management by assisting students in:  
+➢ Using Git/GitHub for version control and project portfolio building.  
+➢ Utilizing tools such as Jira or Trello for effective project tracking and collaboration.  
+❖ Collaborate with the Alumni Office to enhance student access to job and internship opportunities 
+through referrals, mentorship, and professional networks.  
+Internship Evaluation Committee ( 20% Weightage)  
+Composition  
+The committee  will be notified by  the HoD  under the convenorship  of In-charge  Internship Office  and 
+other  members  as deemed fit . 
+Role  
+The committee is responsible for evaluating students based on their internship report,  weekly logs , and 
+the technical contribution made during the internship.  
+Grading  
+The committee will assign 20% (15% Report Submission & 5 % Weekly log ) of the total internship marks  
+and submit the evaluation results to the Internship Office for final processing.  
+  
+5  7. Suitable Host Or ganizations  
+Students are encouraged to seek internship placements in organizations that offer professional 
+environments, technical supervision, and meaningful project experience relevant to their field of study. 
+These host organizations should ideally be involved in s oftware development, digital transformation, or 
+IT infrastructure and provide an opportunity to apply classroom learning in real -world settings.  
+Examples of suitable host organizations include:  
+❖ Software houses and IT consulting firms  
+❖ Banks and telecom companies (IT divisions)  
+❖ Startups and tech incubators  
+❖ Government departments with IT infrastructure  
+❖ Academic institutions and research centers  
+❖ NGOs working on digital transformation or technology -driven initiatives  
+The students can also seek internship through freelancing platforms such as Fiverr or Upwork — but only 
+for technical gigs. These freelancing models allow students to demonstrate real -world skills by working 
+on client -approved IT projects, gaining not only technical exposure but also experience in communication, 
+time management, and client handling . 
+Allowed Gigs (Technical Only):  
+❖ Software/Web/Mobile Development  
+❖ Data Science and AI/ML Projects  
+❖ API Integration and Automation  
+❖ DevOps and Cloud Deployment  
+❖ Cybersecurity  
+❖ Database Design  
+❖ Testing  
+❖ UI Implementation  
+Students are strictly prohibited from undertaking non -technical jobs as part of their internship program, 
+whether in on -site, virtual, or freelancing formats.  
+Non-technical gigs include, but are not limited to content writing, academic writing, blogging, customer 
+support, data entry, transcription, translation, video editing, graphic design, virtual assistance, and any 
+administrative or clerical tasks. Such role s do not align with the academic and technical learning outcomes 
+of the internship course. Therefore, any internship activity that lacks a clear focus on computing, software 
+engineering, or information technology will not be approved by the Internship Offi ce.  
+Fiverr -Specific Internship Model  Requirements  
+Students opting for Fiverr must meet the following eligibility criteria for internship  credit:   
+6  ❖ Profile Authenticity:  The Fiverr account must be fully personalized, containing the student's real 
+name and personal details exactly as stated on their student ID or official identification documents, 
+along with verified bank account information . 
+❖ Service Provider Role : Students must act as service providers offering predefined technical gigs.  
+❖ Gigs and Earnings:  The student must complete at least two gigs or earn a minimum of $500. 
+❖ Client Rating:  The student must have a  minimum average client rating of 4.0/5.0  across completed 
+technical projects.  
+❖ Client Feedback:  Students must submit formal client feedback for at least one complete project.  
+Internship Project Validation  
+❖ Internship Approval:  The student must provide evidence of being hired or the approval message 
+confirming at least a $500 hybrid internship.  
+❖ Contract Summary/Chat Logs:  The Student must provide a contract summary or relevant chat logs 
+from their Fiverr gigs.  
+❖ Submission of Work Done:  The student must submit all completed work related to the project  (if 
+permitted by the client) , including code, designs, documents, or other deliverables, as part of the 
+project evaluation.  
+Upwork -Specific Internship Model  Requirements  
+Students opting for Upwork must meet the following eligibility criteria for internship credit:  
+❖ Profile Authenticity:  The Fiverr account must be fully personalized, containing the student's real 
+name and personal details exactly as stated on their student ID or official identification documents, 
+along with verified bank account information.  
+❖ Proposal Application:  The s tudent must have applied for at least ten (10) proposals on client -posted 
+technical jobs.  
+❖ Completed Projects & Earnings:  The s tudent must have successfully completed  at least two projects 
+or has earned a minimum of $500.  
+❖ Client Rating:  The student must have a minimum average client rating of 4.0/5.0 across completed 
+technical projects.  
+❖ Client Feedback:  The student must submit formal client feedback for at least one project.  
+Internship Project Validation  
+❖ Internship Approval:  The student must provide evidence of being hired or the approval message 
+confirming at least a $500 hybrid internship.  
+❖ Contract Summary/ Chat Logs : The student must provide a contract summary or relevant chat logs 
+from their Upwork projects.  
+❖ Submission of Completed Work:  The student must submit all completed work related to the project, 
+including code, design , documentation, or other deliverables, as part of project evaluation.   
+7  8. Internship Report  Submission  
+Whether students complete their internship through traditional organization  (on-site/ virtual)  or through 
+freelancing platforms  (Fiverr/ Upwork) , they are required to submit a detailed report and supporting 
+documents. These serve as evidence of the work completed and the learning outcomes achieved.  
+Internship Report Submission Requirement (on -site/virtual)  
+❖ The internship certificate, printed on the organization’s letterhead, includes issuance date, student 
+name, internship duration (start and end dates), and is signed/stamped by an authorized officer of the 
+organization.  
+❖ Students employed may submit an employment or experience letter, clearly stating job timings that 
+do not conflict with class timings.  
+❖ Weekly log report  
+❖ The complete internship report (see Annex -D.1) 
+Internship Report Submission Requirement (Fiverr and Upwork)  
+❖ Personalized Account Verification:  Screenshots showing the student’s personalized Fiverr/Upwork 
+profile including, Real name (matching student ID or CNIC), profile summary and verified payment 
+method (bank account)  
+❖ Client Engagement Evidence:  Hired or approved message for at least $500 worth of technical work 
+or screenshots of contracts/proposals accepted by clients and chat summaries showing communication 
+with clients, timelines, and project  agreements.  
+❖ Project Completion Proof:  Screenshots or PDFs of delivered work, client reviews/ratings (4.0/5.0), 
+or formal client feedback, if available (email or message)  
+❖ Internship  Logbook /Portfolio:  A detailed logbook or portfolio documenting:  
+➢ Task-wise breakdown with dates, activities, and description  
+➢ Screenshots of work -in-progress and final deliverables  
+➢ List of technologies/tools used (design, development, deployment)  
+❖ Supervisor/Mentor Details:  Details of client or project mentor who supervised the freelance work  
+➢ Name, designation (if applicable), email/contact information  
+➢ A brief endorsement or feedback message, if possible  
+❖ A complete Internship Report  (See Annex -D.2) 
+Student -Proposed Internships  
+Students are also welcome to arrange their own internships by approaching organizations independently. 
+However, it is mandatory that all self -arranged internships  be approved by the Internship Officer prior to 
+the commencement  of the internships.   
+8  9. Supervisory Framework  
+The internship component is conducted under a structured supervisory framework to ensure effective 
+academic guidance and professional development. Each intern is supported by two supervisors:  
+Faculty Supervisor  
+❖ Assigned by the Internship Office.  
+❖ Guides the student academically and monitors overall progress.  
+❖ Reviews reports and evaluations submitted by the intern.  
+❖ Acts as a liaison between the host organization and the university in case of any issues.  
+❖ Each Campus shall maintain  a balanced workload  faculty in terms of internship supervisions .  
+Site Supervisor (Host Organization)  
+❖ Introduces the intern to the organizational culture and project requirements.  
+❖ Allocates tasks and supervises the intern’s day -to-day performance.  
+❖ Submits two performance evaluation s, one at mid of internship and the second at the completion  of 
+Internship . 
+10. Student Responsibilities  
+Interns are expected to:  
+❖ Demonstrate professionalism, punctuality, and accountability throughout the internship.  
+❖ Comply with the host organization’s rules, regulations, and cultural norms.  
+❖ Maintain consistent communication with both faculty and site supervisors.  
+❖ Submit all required documentation within designated timelines. This includes:  
+➢ Weekly activity logs  
+➢ Final internship report (maximum 3,500 words)  
+➢ One-page reflective summary  
+➢ Completed evaluation form from the Site Supervisor  
+Note: Failure to meet any of the above requirements may result in failure of the internship 
+component.  
+11. Internship Process and Timeline   
+1. Consent Submission : Students must submit their internship consent no later than mid‑semester of 
+the preceding term —i.e., one semeste r before the internship begins.  
+2. Registration:  Students must formally register for the internship through the Internship Office.  
+3. Approval of Placement:  Internships may be self -arranged by students; however, placements must 
+be approved by the Internship Office.   
+9  4. TOR Submission:  Terms of Reference are developed with input from the faculty and site supervisor 
+to ensure that an internship continues as a learning situation and that the intended relationship 
+between intern and host organization continues during the internship tenure.  These will be reported 
+as “Internship proposal / Design statement” referred in the Reports Required section.  
+5. Engagement:  The internship period begins under the supervision of both designated supervisors.  
+6. Reporting:  Students must submit the following documents (Details available at Annex A):  
+➢ Internship Proposal/Design Form (during first week of Internship)  
+➢ Progress Reports (every 3 weeks)  
+➢ Final Internship Report (within one week of completion)  
+➢ Reflective Summary (one -page along the Final Internship Report)  
+➢ Evaluation Form by Site Supervisor  
+7. Final Evaluation:  Upon completion, students submit final documentation and await confirmation of 
+internship completion.  
+12. Evaluation and Assessment  
+The final evaluation of the internship is based on a holistic review of student performance, incorporating 
+feedback from both supervisors. The internship is recorded on a Pass/Fail basis. A minimum of 60 marks 
+is required to pass.  
+On-site Internship / Virtual Internship Evaluation  
+The evaluation is conducted using the following weightage scheme:  
+Site Supervisor Evaluations  40 
+Faculty Supervisor Review    40 
+Internship Office  
+- Internship Design Proposal  
+- Activity Log Completion (submitted every week)  
+- Final Internship Report   
+5 
+5 
+10 
+Total  100 
+ 
+Freelancing -Based Internship (Fiverr/Upwork)  
+The evaluation criteria for freelancing based internship s are as follows : 
+1. Completion of Internship Project:  Successful completion of the assigned internship project as per 
+the defined scope.  
+   
+10  2. Client Rating:  The client rating of the completed internship project will be factored into the 
+evaluation.  
+Internship Supervisor   60 
+- Internship Office  40 
+Total  100 
+13. Complaints and Grievances  
+Students encountering difficulties during their internship may report their concerns by submitting a 
+Student Feedback Form, available through the Internship Office. All grievances will be reviewed and 
+resolved by the Departmental Internship Committee in a timely and confidential manner.  
+The department emphasizes the importance of the internship as a critical academic and professional 
+milestone. Students are expected to approach the internship with seriousness and integrity, recognizing it 
+not only as a degree requirement but also as a val uable opportunity to initiate a successful career in the 
+field of computing.  
+   
+11   
+ 
+ 
+ 
+ 
+Annexture s   
+12  Reports Required  
+1. Internship Proposal/Design Statement  
+Students are expected to take an active role in shaping their internship experience. As part of the initial 
+planning process, each student must prepare a brief Internship Design Statement, in collaboration with 
+their site supervisor at the host organizatio n. This statement must be submitted within the first week of the 
+internship, alongside the initial progress report.  
+The Internship Design Statement should include the following components:  
+❖ Students’ Career Goal : A brief description of the student’s intended career path within the field 
+of Computer Science (e.g., software engineering, AI/ML research, cybersecurity, data science, 
+etc.).  
+❖ Learning Objectives:  Clearly defined goals for what the student aims to learn during the 
+internship, aligning with broader computing concepts such as systems design, programming 
+practices, database management, cloud computing, or IT project management.  
+❖ Internship Placement Overview: Name and brief description of the host organization, whether 
+the internship is on -site, remote, or hybrid, the functional area within the company (e.g., software 
+development, QA, DevOps, IT support, R&D lab).  
+❖ Supervisor Details:  Name, designation, email, and contact number of the site supervisor at the 
+host organization.  
+❖ Scope of Work / Expected Deliverables: A summary of the specific tasks, tools, platforms, and 
+technologies the student will engage with. Examples include developing modules, debugging code, 
+writing documentation, contributing to sprints, performing system analysis, or conducting 
+penetration tes ting. 
+❖ Academic Preparation:  A list of relevant coursework or academic projects that have prepared the 
+student for this internship (e.g., Data Structures, Web Development, Artificial Intelligence, 
+Software Engineering Project, etc.).  
+❖ Additional Comments (Optional): Any special considerations, expectations from the host 
+organization, or observations the student would like to include.  
+2. Student Internship report  
+At the conclusion of the internship, students are required to submit a comprehensive Internship Report (8 –
+10 pages (~3500 words), 1.5 line spacing, 11 -point font, printed double -sided where applicable, and 
+including relevant annexures). This report must pr ovide a critical assessment of one or more aspects of 
+the host organization, particularly focusing on the technical projects, tools, platforms, and systems the 
+student engaged with during the internship.  
+The report must clearly address:  
+❖ The nature of tasks and responsibilities  undertaken (Includes major duties designated to you 
+and assignments you have completed.)  
+❖ The technologies, frameworks, or methodologies  used  
+13  ❖ Learning Experience  (Communicate skills and knowledge that you gained or refined through 
+the internship; lessons learned in technical and professional domains).  
+❖ Challenges  (Detail major challenges in your role and how you tackled them.  
+❖ The value and contributions  made to the host organization  
+❖ Reflections on how the experience connects with academic preparation  
+The report is to be submitted to the assigned Faculty Supervisor within one week of internship completion. 
+Students are solely responsible for monitoring departmental announcements to ensure timely submissions.  
+3. One-page reflective summary  
+Students must submit a one-page reflective summary , which should include:  
+❖ A brief personal evaluation of the overall internship experience  
+❖ Insights on its relevance to their academic and career goals  
+❖ Suggestions for improvement of the experience (if any)  
+This summary is a separate document and must also be submitted to the Faculty Supervisor.  
+4. Intern Evaluation Form  
+The host organization and faculty supervisor is required to complete a standardized Intern Evaluation 
+Form. This form will provide feedback on:  
+❖ The student’s technical performance and deliverables  
+❖ Professionalism and workplace behavior  
+❖ Communication and teamwork  
+❖ Whether the student met the expectations set by the host organization  
+ 
+ 
+   
+14   
+ 
+ 
+ 
+ 
+Annexture A  
+(INTERNSHIP APPROV AL FORM ) 
+15                                              
+INTERNSHIP APPROV AL FORM  
+Section A: Organization Information  
+Organization Name   
+Address   
+Industry Sector   
+Contact Person Name   
+Designation   
+Phone Number   
+Email Address   
+Section B: Internship Position Details  
+Number of Internship Positions   
+Nature of Internship  ☐ Software Development  ☐ Data Science      ☐ Networking  
+☐ Cyber Security               ☐ Web/Mobile Development      
+☐ Other : _______________________________________  
+Internship Location   
+Start Date   
+End Date   
+Working Days & Hours   
+Mode  ☐ On-Site  ☐ Virtual   ☐ Freelancing Based  
+Section C: For Internship Office Use Only  
+Received By (Internship Office)   
+Status   
+Signature (Internship In -charge 
+Officer)   
+ 
+Date   
+ 
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+  
+16   
+ 
+ 
+ 
+Annexture B  
+(Internship Assignment & Student Agreement Form)   
+17  INTERNSHIP ASSIGNMENT & STUDENT AGREEMENT FORM  
+To be filled by the student  
+Student Information  
+Full Name   
+Registration Number   
+Degree Program   
+Semester   
+Contact Number   
+Email Address   
+Preferred Internship Field/Domain (e.g., 
+Software Development, AI/Data Science, Cyber 
+Security etc.)   
+For Internship Office Use Only  
+Company/Organization Name   
+Internship Role/Position   
+Faculty Supervisor Name & Designation   
+Site Supervisor Name & Designation   
+Duration of Internship   
+Start Date   End Date   
+Student Internship Agreement Statement  
+I, ____________________________________________ , a student of ____________________ at 
+_______________________________ hereby acknowledge and accept the internship opportunity assigned to me at [Organization Name] 
+starting from [Start Date] to [End Date].  
+I agree to:  
+1. Abide by the rules, regulations, and code of conduct of the host organization.  
+2. Maintain punctuality, discipline, and professionalism throughout the internship period.  
+3. Complete the tasks and responsibilities assigned to me to the best of my ability.  
+4. Communicate regularly with my academic supervisor and provide updates on my progress.  
+5. Maintain confidentiality of any sensitive information encountered during the internship.  
+6. Submit all required internship reports, evaluations, and documents by the specified deadlines.  
+I understand that this internship is a vital part of my academic and professional development, and I will uphold the standard s expected 
+by my university and the host organization.  
+Student Signature  Faculty Supervisor Signature  Internship In -charge Officer Signature  
+  
+  
+ 
+ 
+ 
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+  
+18   
+ 
+ 
+ 
+ 
+Annexture C  
+(Internship  Design )
+   
+19  Internship  Design Proposal  
+ 
+ 
+ 
+ 
+Submitted  By 
+<<Student  Name>>  
+<<Registration  No>>  
+<<Program>>  
+<<Summer  20XX>>  
+<<Submission  Date>>  
+(Bold,  16 font,  Times  New  Roman  style)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+COMSATS University Islamabad,  Islamabad  Campus  
+20  
+ 1. Organization Overview & Role  
+Briefly describe the organization, its core functions, and the department or team where you will be 
+placed. Also mention your expected role during the internship.  
+ 
+ 
+ 
+ 
+2. Scope of Work  
+Summarize the technical tasks and outputs expected during your internship. Include tools/technologies you 
+plan to use and what you aim to deliver.  
+2.1. Key Activities (check all that apply):  
+☐ Coding   ☐ Testing   ☐ Documentation   ☐ Data Analysis  
+☐ Research   ☐ Technical Support   ☐ Dashboard/Report Creation  
+☐ Other  (please Specify)  
+ 
+2.2. Tools/Technologies to be used:  
+ 
+2.3. Expected Deliverables:  
+ 
+ 
+ 
+ 
+Student Signature: ____________________                      Date: ______________  
+ 
+Internship Supervisor (if any ): ___________________   Date: ______________  
+ 
+ 
+ 
+ 21  
+  
+ 
+ 
+Annexture D.1  
+(Internship  Report for On -Site/ Virtual Internship )  22  
+ Internship  Report  
+Title of the Project Completed  
+(Bold,  16 font,  Times  New  Roman  style)  
+ 
+Submitted  By 
+<<Student  Name>>  
+<<Registration  No>>  
+<<Program>>  
+<<Summer  20XX>>  
+<<Submission  Date>>  
+(Bold,  16 font,  Times  New  Roman  style)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+COMSATS University Islamabad,  Islamabad  Campus  
+23  
+ Declaration  Form  
+ 
+I, [Student Name] , Registration No. [__________] , enrolled in the [Program Name] , hereby declare 
+that I have successfully completed an online internship of [_____] weeks  through [Platform Name – 
+e.g., Fiverr/Upwork] , working with various clients in a professional freelance capacity.  
+This report has been prepared based on the tasks and experiences gained during the internship period. 
+The internship was carried out under the supervision of [Supervisor Name / Faculty Advisor] . 
+I affirm that this report is original  work and has not been submitted elsewhere for academic credit.  
+ 
+ 
+ 
+ 
+Student: _ __________________  Signature :______________  24  
+ Format  of the Internship  Report  
+ 
+1. Acknowledgement  
+(Page  No 1) 
+In this section,  students  should  acknowledge  the support  and help of people  who helped  
+in the completion  of their internship  and the preparation of  their report  (e.g. the employees, 
+department, instructor, family, or any other person).  
+ 
+2. Executive  summary  
+(Page No 2 -Half a page maximum)  
+An executive summary previews the main points of a detailed report. It helps the reader to get a 
+quick view of the report before reading it in detail. In this summary, you should briefly mention 
+everything important that you have done, discovered and concl uded.  
+ 
+3. Table  of contents  
+(Page No 3)  
+List the important section titles and sub -titles in the report with their respective page numbers in a 
+tabular format.  
+Part No 1: 
+4. A brief  introduction  of the freelancing internships  
+(Page  No 4: 1 page  maximum)  
+Provide a brief overview of:  
+❖ The importance of online freelancing internships  
+❖ Your objective for doing the internship  
+❖ Overview of the freelancing platform used (Fiverr, Upwork, etc.)  
+5. Internship Details  
+(Note:  2 pages  maximum)  
+5.1 Duration and Timeline:  
+❖ Mention start and end dates, and weekly hours committed.  
+5.2 Nature of Work:  
+❖ List the services you offered and project types.  
+5.3 Client Interaction:  
+❖ Explain how you communicated and managed clients.  
+5.4 Tools & Technologies Used:  
+❖ Mention software or tools (e.g., Canva, Excel, WordPress, Python, etc.)  25  
+ Part No 2: 
+6. Work Samples / Project Summaries  
+(Note: 1 -2 pages)  
+Provide at least 2 -3 detailed examples of completed tasks, including:  
+❖ Client requirements  
+❖ Your approach and tools used  
+❖ Outcomes achieved  
+(Avoid any client -sensitive data or private information.)  
+Part No 3: 
+7. Learning  Experiences  
+(Note:  1 page)  
+a.  Knowledge  acquired:  Briefly  describe  the knowledge  you gained  through  your internship 
+experience and relate this knowledge to what you learned in specific courses at CUI. 
+b.  Skills learned:  Describe the skills and any career -specific abilities that you gained during your 
+internship.  Discuss any of the skills that you learned as part of courses at the CUI that were 
+helpful during the internship. (Note:  the skill means  the ability  to achieve something  like 
+reading  and understanding  financial  reports, analyzing problems, working  in groups, etc.).  
+c. Observed  attitudes and gained values: Describe the manners, mindsets or values that you 
+found,  and you perceive as  important, in your internship program, for a successful career (e.g. 
+hard work, dependability, honesty, etc.)  
+d. The most challenging task performed: Describe the best and the most challenging mission 
+that was assigned to you during your internship, how you performed it, and how you overcame 
+challenges while performing it.  
+Note:  Sections  6 and 7  8 are important  sections  of this internship  report.   You are required to  
+describe  all the tasks  that were  performed  by you during  your internship  as well as other  sections  in detail.  
+Also note  that descriptions given in bullet points will NOT BE ACCEPTABLE: you  must provide 
+explanations.  
+8. Challenges Faced & Solutions  
+(One  paragraph)  
+Describe any major issues encountered during the internship and how you addressed them. 
+Examples:  
+❖ Difficult clients  
+❖ Time zone differences  
+❖ Technical limitations  
+ 
+9. Reflection & Conclusion   
+(Note:  1 page  ) 26  
+ Summarize your overall experience in the internship keeping in mind the tasks  performed and 
+your learning experience. For example, discuss:  
+❖ Value of freelancing as a career  
+❖ Impact of internship on your professional growth  
+❖ Any future goals or improvement areas  
+Note:  
+Sections  4-9 are NOT  expected  to be copied  from  anywhere.  You must provide information in 
+these sections based on your  personal observation, learning and experience obtained throughout your 
+internship.  Cheating or copying in these sections is NOT acceptable and hence the entire internship report 
+will be completely rejected as per the Collusion and Plagiarism Policies of the university.  
+10. Appendices  
+Attach supporting documents such as:  
+❖ Screenshots of Fiverr/Upwork profile  
+❖  Client reviews (blurred or anonymized)  
+❖ Sample work (if permitted)  
+❖ Certificate of Completion (if available)  
+General  Instructions  for the report:  
+ 
+Complete  all the required  parts  as stated  in the Internship  Report  Template.  Remember:  DO NOT skip 
+any part since each part is important.  
+There  should  be harmony  between  the ideas  that you describe  throughout  the report  (e.g. in the 
+internship experience, conclusions and recommendations).  
+The hard copy of  Internship  Report  should  be submitted  within  the due date to internship office for 
+evaluation and provide soft copy to faculty supervisor.  Submissions made after the due  date will not be 
+considered.  
+ 
+The Internship  Report  should  be typed  with the following  formatting:  
+ 
+❖ Page  limit:  10-15 
+❖ Font size = 12 
+❖ Font style  = Times  New  Roman  
+❖ Space=  1.5 
+❖ Left align  
+❖ Spiral  binding  
+  27  
+  
+ 
+ 
+ 
+Annexture D.2  
+(Internship  Report for Freelancing Based Internship )  28  
+ Internship  Report  
+Title of the Project Completed  
+(Bold,  16 font,  Times  New  Roman  style)  
+ 
+Submitted  By 
+<<Student  Name>>  
+<<Registration  No>>  
+<<Program>>  
+<<Summer  20XX>>  
+<<Submission  Date>>  
+(Bold,  16 font,  Times  New  Roman  style)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+COMSATS University Islamabad,  Islamabad  Campus  
+29  
+ Declaration  Form  
+ 
+I, [Student Name] , Registration No. [__________] , enrolled in the [Program Name] , hereby declare 
+that I have successfully completed an online internship of [_____] weeks  through [Platform Name – 
+e.g., Fiverr/Upwork] , working with various clients in a professional freelance capacity.  
+This report has been prepared based on the tasks and experiences gained during the internship period. 
+The internship was carried out under the supervision of [Supervisor Name / Faculty Advisor] . 
+I affirm that this report is an original work and has not been submitted elsewhere for academic credit.  
+ 
+ 
+ 
+ 
+Student:___________________  Signature :______________  30  
+ Format  of the Internship  Report  
+ 
+1. Acknowledgement  
+(Page  No 1) 
+In this section,  students  should  acknowledge  the support  and help of people  who helped  in 
+the completion  of their internship  and the preparation of  their report  (e.g. the employees, 
+department, instructor, family, or any other person).  
+ 
+2. Executive  summary  
+(Page No 2 -Half a page maximum)  
+An executive summary previews the main points of a detailed report. It helps the reader to get a quick 
+view of the report before reading it in detail. In this summary, you should briefly mention everything 
+important that you have done, discovered and concl uded.  
+ 
+3. Table  of contents  
+(Page No 3)  
+List the important section titles and sub -titles in the report with their respective page numbers in a 
+tabular format.  
+Part No 1: 
+4. A brief  introduction  of the freelancing internships  
+(Page  No 4: 1 page  maximum)  
+Provide a brief overview of:  
+❖ The importance of online freelancing internships  
+❖ Your objective for doing the internship  
+❖ Overview of the freelancing platform used (Fiverr, Upwork, etc.)  
+5. Internship Details  
+(Note:  2 pages  maximum)  
+5.1 Duration and Timeline:  
+6. Mention start and end dates, and weekly hours committed.  
+5.2 Nature of Work:  
+❖ List the services you offered and project types.  
+5.3 Client Interaction:  
+❖ Explain how you communicated and managed clients.  
+5.4 Tools & Technologies Used:  
+❖ Mention software or tools (e.g., Canva, Excel, WordPress, Python, etc.)  31  
+ Part No 2: 
+7. Work Samples  / Project Summaries  
+(Note: 1 -2 pages)  
+Provide at least 2 -3 detailed examples of completed tasks, including:  
+❖ Client requirements  
+❖ Your approach and tools used  
+❖ Outcomes achieved  
+(Avoid any client -sensitive data or private information.)  
+Part No 3: 
+8. Learning  Experiences  
+(Note:  1 page)  
+a.  Knowledge  acquired:  Briefly  describe  the knowledge  you gained  through  your internship 
+experience and relate this knowledge to what you learned in specific courses at CUI. 
+b.  Skills learned:  Describe the skills and any career -specific abilities that you gained during your 
+internship.  Discuss any of the skills that you learned as part of courses at the CUI that were helpful 
+during the internship. (Note:  the skill means  the ability  to achieve something  like reading  and 
+understanding  financial  reports, analyzing problems, working  in groups, etc.).  
+c. Observed  attitudes and gained values: Describe the manners, mindsets or values that you found 
+and you perceive as  important  in your internship program, for a successful career (e.g. hard work, 
+dependability, honesty, etc.)  
+d. The most challenging task performed: Describe the best and the most challenging mission that 
+was assigned to you during your internship, how you performed it, and how you overcame 
+challenges while performing it.  
+Note:  Sections  6 and 7  8 are important  sections  of this internship  report.   You are required to  
+describe  all the tasks  that were  performed  by you during  your internship  as well as other  sections  in 
+detail.  Also note  that descriptions given in bullet points will NOT BE ACCEPTABLE: you  must 
+provide explanations.  
+9. Challenges Faced & Solutions  
+(One  paragraph)  
+Describe any major issues encountered during the internship and how you addressed them. Examples:  
+❖ Difficult clients  
+❖ Time zone differences  
+❖ Technical limitations  
+ 32  
+ 10. Reflection & Conclusion   
+(Note:  1 page ) 
+Summarize your overall experience in the internship keeping in mind the tasks  performed and your 
+learning experience. For example, discuss:  
+❖ Value of freelancing as a career  
+❖ Impact of internship on your professional growth  
+❖ Any future goals or improvement areas  
+Note:  
+Sections  4-9 are NOT  expected  to be copied  from  anywhere.  You must provide information in 
+these sections based on your  personal observation, learning and experience obtained throughout your 
+internship.  Cheating or copying in these sections is NOT acceptable and hence the entire internship 
+report will be completely rejected as per the Collusion and Plagiarism Policies of the university.  
+11. Appendices  
+Attach supporting documents such as:  
+❖ Screenshots of Fiverr/Upwork profile  
+❖  Client reviews (blurred or anonymized)  
+❖ Sample work (if permitted)  
+❖ Certificate of Completion (if available)  
+ 
+General  Instructions  for the report:  
+Complete  all the required  parts  as stated  in the Internship  Report  Template.  Remember:  DO NOT skip 
+any part since each part is important.  
+There  should  be harmony  between  the ideas  that you describe  throughout  the report  (e.g. in the 
+internship experience, conclusions and recommendations).  
+The hard copy of Internship Report should be submitted within the due date to internship office for 
+evaluation and provide soft copy to faculty supervisor.  Submissions made after the due  date will not 
+be considered.  
+ 
+The Internship  Report  should  be typed  with the following  formatting:  
+❖ Page  limit:  10-15 
+❖ Font size = 12 
+❖ Font style  = Times  New  Roman  
+❖ Space=  1.5 
+❖ Left align  
+❖ Spiral  binding  33  
+   34  
+  
+ 
+ 
+ 
+ 
+ 
+Annexture E  
+(FACULTY SUPERVISOR EV ALUATION FORM )
+  35  
+  
+                                FACULTY SUPERVISOR EV ALUATION FORM  
+Internee Name   
+Internee Registration   
+Internship Duration   
+Internship Start Date   
+Internship End Date   
+Title of Project   
+Please grade the following on a scale of 1 -10 (10 being the highest and 1 being the lowest):  
+Evaluation Criteria  Score  
+Platform Activity & Engagement  /10 
+Completion of Internship Project(s)  /10 
+Earnings Achieved  /10 
+Skill Development & Learning  /10 
+Client Rating and Feedback  /10 
+Professionalism & Communication  /10 
+ 
+Total Marks Obtained (Out of 60)  Supervisor Signature  
+  
+ 
+ 
+ 
+   
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 36  
+  
+ 
+ 
+ 
+ 
+ 
+Annexture F 
+(INTERNSHIP COORDINATOR/OFFICE 
+EV ALUATION FORM ) 
+  37  
+  
+                   INTERNSHIP COORDINATOR/OFFICE EV ALUATION FORM  
+Internee Name   
+Internee Registration   
+Internship Duration   
+Internship Start Date   
+Internship End Date   
+Title of Project   
+Instructions: Mark only one oval per row. Each criterion carries a maximum of 10 marks.  
+Criteria  Excellent (10)  Good (8)  Satisfactory (5)  Needs Improvement (3)  
+Internship Report 
+(Logbook)  Logbook/report is 
+detailed, reflective, 
+well-structured, and free 
+of errors.  Well-written report with 
+minor issues.  The report  is brief or 
+somewhat 
+disorganized.  Poorly written or missing 
+report/logbook.  
+Portfolio Evidence 
+(Screenshots, Files, 
+Chat Logs)  All portfolio evidence is 
+complete, verified, and 
+professionally 
+presented.  Most portfolio evidence 
+is included and clear.  Portfolio is basic with 
+minor missing 
+elements.  Little or no supporting 
+portfolio evidence 
+provided.  
+Time Management & 
+Deadline Compliance  Always meet  or beat 
+deadlines; proactive 
+planning.  Mostly on time with 
+minor delays.  Occasional delays or 
+time mismanagement.  Frequently late or failed to 
+meet deadlines.  
+Overall Internship 
+Impact  Internships have made a  
+strong contribution to 
+career growth and 
+confidence.  Positively influenced 
+technical and freelancing 
+skills.  Some benefits , but 
+impact limited.  No clear value or 
+contribution to career.  
+ 
+Total Marks Obtained (Out of 40)   Evaluator Signature  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+  
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 38  
+  
+Annexture G  
+(SITE SUPERVISOR EV ALUATION FORM)  
+  39  
+  
+   SITE SUPERVISOR EV ALUATION FORM  
+The organization’ s representative is required to fill out the following information  & return  to the Institute.  
+ 
+ 
+Internee Name   
+Internee CUI Registration   
+Internship Duration   Start Date   End Date   
+Host Organization/Department(s) Interned at  
+Instructions: Mark only one oval per row. Each criterion carries a maximum of 4 marks.  
+Assessment Criteria  Excellent 
+(4) Very Good 
+(3) Satisfactory 
+(2) Unsatisfactory (1)  
+Punctuality and Attendance  ⭘ ⭘ ⭘ ⭘ 
+Ability to link theory to practice  ⭘ ⭘ ⭘ ⭘ 
+Demonstrated critical thinking and problem -solving skills  ⭘ ⭘ ⭘ ⭘ 
+Technical Knowledge  ⭘ ⭘ ⭘ ⭘ 
+Creativity / Conceptual Ability  ⭘ ⭘ ⭘ ⭘ 
+Ability to adapt to a variety of tasks  ⭘ ⭘ ⭘ ⭘ 
+Time Management & Deadline Compliance  ⭘ ⭘ ⭘ ⭘ 
+Behaved in a professional manner  ⭘ ⭘ ⭘ ⭘ 
+Effectively performed assignments  ⭘ ⭘ ⭘ ⭘ 
+Oral & Written communication skills  ⭘ ⭘ ⭘ ⭘ 
+ 
+Total Marks Obtained (out of 40): ____________  
+Supervisor Comments:  
+_____________________________________________________________________________________
+_____________________________________________________________________________________
+_____________________________________________________________________________________
+_____________________________________________________________________  
+Supervisor Name & Signature: ___ _________________ ___________________ _____    Date: 
+______________  
+Stamp (if applicable)   
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 40  
+  
+ 
+ 
+ 
+Annexture H  
+(FACULTY SUPERVISOR EV ALUATION FORM FOR 
+FREELANCING BASED INTERNSHIP ) 
+  41  
+  
+FACULTY SUPERVISOR EVALUATION FORM FOR FREELANCING BASED INTERNSHIP  
+Internee Name   
+Internee Registration   
+Internship Duration   
+Internship Start Date   
+Internship End Date   
+Title of Project   
+Please grade  the following on a scale of 1 -10 (10 being the highest and 1 being the lowest):  
+Evaluation Criteria  Score  
+Platform Activity & Engagement  /10 
+Completion of Internship Project(s)  /10 
+Earnings Achieved  /10 
+Skill Development & Learning  /10 
+Client Rating and Feedback  /10 
+Professionalism & Communication ( Consistency and Time Management ) /10 
+ 
+Total Marks Obtained (Out of 60)  Supervisor  Signature  
+  
+ 
+ 
+   
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 42  
+  
+ 
+ 
+ 
+Annexture I  
+(INTERNSHIP COORDINATOR/OFFICE 
+EV ALUATION FORM FOR FREELAUNCING BASED 
+INTERNSHIP ) 
+  43  
+  
+INTERNSHIP COORDINATOR/OFFICE EV ALUATION FORM FOR FREELAUNCING 
+BASED INTERNSHIP  
+Internee Name   
+Internee Registration   
+Internship Duration   
+Internship Start  Date   
+Internship End Date   
+Title of Project   
+Instructions: Mark only one oval per row. Each criterion carries a maximum of 10 marks.  
+Criteria  Excellent (10)  Good (8)  Satisfactory (5)  Needs Improvement 
+(3) 
+Internship Report 
+(Logbook)  Logbook/report is 
+detailed, reflective, 
+well-structured, and 
+free of errors.  Well-written report 
+with minor issues.  Report is brief or 
+somewhat 
+disorganized.  Poorly written or 
+missing report/logbook.  
+Portfolio Evidence 
+(Screenshots, Files, 
+Chat Logs)  All portfolio evidence 
+is complete, verified, 
+and professionally 
+presented.  Most portfolio evidence 
+is included and clear.  Portfolio is basic with 
+minor missing 
+elements.  Little or no supporting 
+portfolio evidence 
+provided.  
+Time Management & 
+Deadline Compliance  Always met or beat 
+deadlines; proactive 
+planning.  Mostly on time with 
+minor delays.  Occasional delays or 
+time mismanagement.  Frequently late or failed 
+to meet deadlines.  
+Overall Internship 
+Impact  Internship had strong 
+contribution to career 
+growth and confidence.  Positively influenced 
+technical and 
+freelancing skills.  Some benefit, but 
+impact limited.  No clear value or 
+contribution to career.  
+            
+Total Marks Obtained (Out of 40)   Evaluator Signature  
+  
+ 
+ 
+ 
+  
+COMSATS University  Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 44  
+  
+ 
+ 
+Annexture J  
+(Internship Result)  
+  45  
+  
+ 
+INTERNSHIP RESULT  
+Internee Name   
+Internee Registration   
+Internship Duration   
+Internship Start  Date   
+Internship End Date   
+ 
+Evaluation Summary  
+1. Onsite /Virtual Internship Model  
+Evaluator  Maximum Marks  Marks Awarded  Status ( Pass/Fail)  
+Faculty Supervisor  40   
+Site Supervisor  40   
+Internship Office  20   
+Total  100   
+ 
+2. Fiverr / Upwork Model  
+Evaluator  Maximum Marks  Marks Awarded  Status (Pass/Fail)  
+Faculty Supervisor  60   
+Internship Office  40   
+Total  100   
+ 
+Submitted By:  
+ 
+Internship Coordinator Name    
+ 
+Signature    
+ 
+HoD Signature    
+ 
+Date    
+  
+COMSATS University Islamabad   
+Islamabad Campus  
+Department of Computer Science  
+ 
